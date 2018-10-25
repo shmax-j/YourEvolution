@@ -1,0 +1,132 @@
+<html>
+<head>
+<title>controllers.Main.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(204,120,50); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(104,151,187); }
+.s3 { color: rgb(106,135,89); }
+.s4 { color: rgb(128,128,128); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+    controllers.Main.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">import </span><span class="s1">javafx.animation.AnimationTimer</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.application.Application</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.geometry.Pos</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.Scene</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.control.Button</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.control.Label</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.layout.BorderPane</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.layout.VBox</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.paint.Color</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.stage.Stage</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.util.Map</span><span class="s0">;</span><span class="s1"> 
+ 
+ 
+</span><span class="s0">public class </span><span class="s1">controllers.Main </span><span class="s0">extends </span><span class="s1">Application {
+    </span><span class="s0">private double </span><span class="s1">interval_food = </span><span class="s2">50</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private static </span><span class="s1">ArrayList&lt;food.NanoFoodPiece&gt; foodList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span><span class="s1">
+    </span><span class="s0">private static </span><span class="s1">Map&lt;String</span><span class="s0">, </span><span class="s1">entities.bacteria.Bacteria&gt; bMap = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span><span class="s1">
+    </span><span class="s0">static </span><span class="s1">entities.bacteria.Bacteria target</span><span class="s0">;</span><span class="s1">
+    </span><span class="s0">private </span><span class="s1">food.NanoFoodPiece toRemove</span><span class="s0">;</span><span class="s1">
+    @Override 
+    </span><span class="s0">public void </span><span class="s1">start(Stage primaryStage) 
+    { 
+        BorderPane root = </span><span class="s0">new </span><span class="s1">BorderPane()</span><span class="s0">;</span><span class="s1"> 
+        VBox tools = </span><span class="s0">new </span><span class="s1">VBox(</span><span class="s2">5</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        VBox nfoTable = </span><span class="s0">new </span><span class="s1">VBox(</span><span class="s2">0</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        controllers.ModificationsPane mp = </span><span class="s0">new </span><span class="s1">controllers.ModificationsPane()</span><span class="s0">;</span><span class="s1">
+        mp.setVisible(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+        tools.setAlignment(Pos.TOP_RIGHT)</span><span class="s0">;</span><span class="s1"> 
+        nfoTable.setAlignment(Pos.TOP_LEFT)</span><span class="s0">;</span><span class="s1"> 
+        Button mtp = </span><span class="s0">new </span><span class="s1">Button(</span><span class="s3">&quot;Multiply it&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        Button food = </span><span class="s0">new </span><span class="s1">Button(</span><span class="s3">&quot;Eats&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        Button amd = </span><span class="s0">new </span><span class="s1">Button(</span><span class="s3">&quot;Add modification&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        Label targetNfo = </span><span class="s0">new </span><span class="s1">Label(</span><span class="s3">&quot;Choose the target.&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        root.setRight(tools)</span><span class="s0">;</span><span class="s1"> 
+        root.setLeft(nfoTable)</span><span class="s0">;</span><span class="s1"> 
+        root.setCenter(mp)</span><span class="s0">;</span><span class="s1"> 
+        Scene scene = </span><span class="s0">new </span><span class="s1">Scene(root</span><span class="s0">,</span><span class="s2">600</span><span class="s0">,</span><span class="s2">600</span><span class="s0">, </span><span class="s1">Color.rgb(</span><span class="s2">146</span><span class="s0">, </span><span class="s2">216</span><span class="s0">, </span><span class="s2">238</span><span class="s1">))</span><span class="s0">;</span><span class="s1"> 
+        primaryStage.setScene(scene)</span><span class="s0">;</span><span class="s1"> 
+ 
+        </span><span class="s4">//First item initialization</span><span class="s1"> 
+        entities.bacteria.Bacteria bt = </span><span class="s0">new </span><span class="s1">entities.bacteria.Bacteria(</span><span class="s2">300</span><span class="s0">,</span><span class="s2">300</span><span class="s0">,</span><span class="s2">10</span><span class="s1">)</span><span class="s0">;</span><span class="s1">
+        food.NanoFoodPiece ft = </span><span class="s0">new </span><span class="s1">food.NanoFoodPiece()</span><span class="s0">;</span><span class="s1">
+        bMap.put(</span><span class="s3">&quot;First&quot;</span><span class="s0">, </span><span class="s1">bt)</span><span class="s0">;</span><span class="s1"> 
+        foodList.add(ft)</span><span class="s0">;</span><span class="s1"> 
+ 
+        mtp.setOnAction(event -&gt; { 
+            </span><span class="s0">if </span><span class="s1">(target.canMultiply()){ 
+                bMap.put(bMap.size()+</span><span class="s2">1</span><span class="s1">+</span><span class="s3">&quot;&quot;</span><span class="s0">, new </span><span class="s1">entities.bacteria.Bacteria(target.getTranslateX()</span><span class="s0">,</span><span class="s1">target.getTranslateY()</span><span class="s0">,</span><span class="s1">target.satiety/</span><span class="s2">2</span><span class="s1">))</span><span class="s0">;</span><span class="s1">
+                entities.bacteria.Bacteria nowTarget = bMap.get(bMap.size()+</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1">
+                </span><span class="s0">if </span><span class="s1">(target.modifications.contains(entities.bacteria.BMod.Nucleus))target.modifications.forEach(nowTarget::addModification)</span><span class="s0">;</span><span class="s1">
+                root.getChildren().add(nowTarget)</span><span class="s0">;</span><span class="s1"> 
+                target.satiety -= </span><span class="s2">10</span><span class="s0">;</span><span class="s1"> 
+            } 
+        })</span><span class="s0">;</span><span class="s1"> 
+        food.setOnAction(event -&gt; target.searchForFood(foodList))</span><span class="s0">;</span><span class="s1"> 
+        amd.setOnAction(event -&gt; { 
+            mp.reinitialize()</span><span class="s0">;</span><span class="s1"> 
+            mp.setVisible(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            mp.toFront()</span><span class="s0">;</span><span class="s1"> 
+            amd.setText(mp.getChildren().isEmpty()?</span><span class="s3">&quot;No modifications available.&quot;</span><span class="s1">:</span><span class="s3">&quot;Add modification&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        })</span><span class="s0">;</span><span class="s1"> 
+ 
+ 
+        AnimationTimer loop = </span><span class="s0">new </span><span class="s1">AnimationTimer() { 
+            @Override 
+            </span><span class="s0">public void </span><span class="s1">handle(</span><span class="s0">long </span><span class="s1">now) { 
+                bMap.forEach((name</span><span class="s0">, </span><span class="s1">tag) -&gt;tag.update(foodList))</span><span class="s0">;</span><span class="s1"> 
+                tools.setVisible(target!=</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                targetNfo.setText(target==</span><span class="s0">null</span><span class="s1">?</span><span class="s3">&quot;Choose target.&quot;</span><span class="s1">:target.toString())</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">if </span><span class="s1">(target!=</span><span class="s0">null</span><span class="s1">)mtp.setText(target.canMultiply()?</span><span class="s3">&quot;Multiply it&quot;</span><span class="s1">:</span><span class="s3">&quot;Not enough satiety&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">else </span><span class="s1">mtp.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">if </span><span class="s1">(target!=</span><span class="s0">null</span><span class="s1">)food.setText(target.satiety+</span><span class="s2">1</span><span class="s1">&gt;</span><span class="s2">100</span><span class="s1">?</span><span class="s3">&quot;Full&quot;</span><span class="s1">:</span><span class="s3">&quot;Eats&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">else </span><span class="s1">food.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+                </span><span class="s0">if </span><span class="s1">(interval_food==</span><span class="s2">0</span><span class="s1">){ 
+                    interval_food=</span><span class="s2">200</span><span class="s0">;</span><span class="s1"> 
+                    foodList.add(</span><span class="s0">new </span><span class="s1">food.NanoFoodPiece())</span><span class="s0">;</span><span class="s1">
+                    root.getChildren().add(foodList.get(foodList.size()-</span><span class="s2">1</span><span class="s1">))</span><span class="s0">;</span><span class="s1"> 
+                } 
+                interval_food--</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">for </span><span class="s1">(food.NanoFoodPiece nt:foodList) {
+                    nt.toBack()</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">if </span><span class="s1">(nt.getTranslateX()==</span><span class="s2">700</span><span class="s1">){ 
+                        toRemove=nt</span><span class="s0">;</span><span class="s1"> 
+                        root.getChildren().remove(nt)</span><span class="s0">;</span><span class="s1"> 
+                    } 
+                } 
+                foodList.remove(toRemove)</span><span class="s0">;</span><span class="s1"> 
+            } 
+        }</span><span class="s0">;</span><span class="s1"> 
+ 
+        root.getChildren().addAll(bt</span><span class="s0">,</span><span class="s1">ft)</span><span class="s0">;</span><span class="s1"> 
+        nfoTable.getChildren().add(targetNfo)</span><span class="s0">;</span><span class="s1"> 
+        tools.getChildren().addAll(mtp</span><span class="s0">,</span><span class="s1">food</span><span class="s0">,</span><span class="s1">amd)</span><span class="s0">;</span><span class="s1"> 
+        primaryStage.setTitle(</span><span class="s3">&quot;Game&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        loop.start()</span><span class="s0">;</span><span class="s1"> 
+        primaryStage.show()</span><span class="s0">;</span><span class="s1"> 
+ 
+    } 
+ 
+ 
+    </span><span class="s0">public static void </span><span class="s1">controllers(String[] args) {
+        launch(args)</span><span class="s0">;</span><span class="s1"> 
+    } 
+} 
+</span></pre>
+</body>
+</html>

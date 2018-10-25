@@ -1,0 +1,55 @@
+<html>
+<head>
+<title>controllers.ModificationsPane.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(204,120,50); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(104,151,187); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+controllers.ModificationsPane.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">import </span><span class="s1">javafx.geometry.Pos</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.control.Button</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.layout.VBox</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.util.Map</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s0">class </span><span class="s1">controllers.ModificationsPane </span><span class="s0">extends </span><span class="s1">VBox {
+    </span><span class="s0">private </span><span class="s1">Map&lt;String</span><span class="s0">, </span><span class="s1">Button&gt; map = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span><span class="s1"> 
+    controllers.ModificationsPane(){
+        setSpacing(</span><span class="s2">5</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        setAlignment(Pos.CENTER)</span><span class="s0">;</span><span class="s1"> 
+ 
+        </span><span class="s0">for </span><span class="s1">(entities.bacteria.BacteriaModifications next:entities.bacteria.BacteriaModifications.values()){
+            map.put(next.name()</span><span class="s0">, new </span><span class="s1">Button(next.name()))</span><span class="s0">;</span><span class="s1"> 
+        } 
+        map.forEach((name</span><span class="s0">, </span><span class="s1">tag)-&gt;{ 
+            getChildren().add(tag)</span><span class="s0">;</span><span class="s1"> 
+            tag.setOnAction(event -&gt; { 
+                BTarget.addModification(entities.bacteria.BacteriaModifications.valueOf(name).mod)</span><span class="s0">;</span><span class="s1">
+                setVisible(</span><span class="s0">false</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+            })</span><span class="s0">;</span><span class="s1"> 
+        })</span><span class="s0">;</span><span class="s1"> 
+    } 
+    </span><span class="s0">void </span><span class="s1">reinitialize(){ 
+        map.forEach((next</span><span class="s0">,</span><span class="s1">btm)-&gt;{ 
+            </span><span class="s0">boolean </span><span class="s1">c = BTarget.satiety&lt;entities.bacteria.BacteriaModifications.valueOf(next).mod.price</span><span class="s0">;</span><span class="s1">
+                </span><span class="s0">if </span><span class="s1">(BTarget.modifications.contains(entities.bacteria.BacteriaModifications.valueOf(next).mod)||c){
+                    getChildren().remove(btm)</span><span class="s0">;</span><span class="s1"> 
+ 
+                }</span><span class="s0">else if </span><span class="s1">(!getChildren().contains(btm)) getChildren().add(btm)</span><span class="s0">;</span><span class="s1"> 
+        })</span><span class="s0">;</span><span class="s1"> 
+    } 
+} 
+</span></pre>
+</body>
+</html>

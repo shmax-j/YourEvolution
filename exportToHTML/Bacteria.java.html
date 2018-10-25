@@ -1,0 +1,189 @@
+<html>
+<head>
+<title>entities.bacteria.Bacteria.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(204,120,50); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(106,135,89); }
+.s3 { color: rgb(104,151,187); }
+.s4 { color: rgb(128,128,128); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+    entities.bacteria.Bacteria.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">import </span><span class="s1">javafx.geometry.Point2D</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.image.Image</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.image.ImageView</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.layout.Pane</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">javafx.scene.transform.Rotate</span><span class="s0">;</span><span class="s1"> 
+ 
+ 
+</span><span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span><span class="s1"> 
+ 
+ </span><span class="s0">class </span><span class="s1">entities.bacteria.Bacteria </span><span class="s0">extends </span><span class="s1">Pane{
+    </span><span class="s0">private </span><span class="s1">Point2D front</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">String caller = </span><span class="s2">&quot;idle&quot;</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">Point2D direction = </span><span class="s0">new </span><span class="s1">Point2D(</span><span class="s3">0</span><span class="s0">,</span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private double </span><span class="s1">currentVelocity</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private double </span><span class="s1">velocity = </span><span class="s3">1</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">food.NanoFoodPiece choose = </span><span class="s0">new </span><span class="s1">food.NanoFoodPiece()</span><span class="s0">;</span><span class="s1">
+    </span><span class="s0">private </span><span class="s1">entities.bacteria.StateMachine state</span><span class="s0">;</span><span class="s1">
+    </span><span class="s0">private </span><span class="s1">Point2D nextPos</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">Image idle</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">Image active</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">ImageView sprite</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">float </span><span class="s1">satiety</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private double </span><span class="s1">waitingT = </span><span class="s3">1</span><span class="s0">;</span><span class="s1"> 
+    ArrayList&lt;entities.bacteria.BMod&gt; modifications = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span><span class="s1">
+ 
+    </span><span class="s0">private </span><span class="s1">Point2D center</span><span class="s0">;</span><span class="s1"> 
+    entities.bacteria.Bacteria(</span><span class="s0">double </span><span class="s1">x</span><span class="s0">, double </span><span class="s1">y</span><span class="s0">, float </span><span class="s1">satiety){
+        modifications.add(entities.bacteria.BMod.None)</span><span class="s0">;</span><span class="s1">
+        changeState(</span><span class="s2">&quot;idle&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        idle = </span><span class="s0">new </span><span class="s1">Image(</span><span class="s2">&quot;res/Bacteria_Idle.png&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        active = </span><span class="s0">new </span><span class="s1">Image(</span><span class="s2">&quot;res/Bacteria_Active.png&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        sprite = </span><span class="s0">new </span><span class="s1">ImageView(idle)</span><span class="s0">;</span><span class="s1"> 
+        sprite.setSmooth(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">this</span><span class="s1">.satiety = satiety</span><span class="s0">;</span><span class="s1"> 
+        setTranslateY(y)</span><span class="s0">;</span><span class="s1"> 
+        setTranslateX(x)</span><span class="s0">;</span><span class="s1"> 
+        sprite.setFitHeight(</span><span class="s3">30</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        sprite.setFitWidth(</span><span class="s3">70</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">this</span><span class="s1">.setPrefHeight(sprite.getFitHeight())</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">this</span><span class="s1">.setPrefWidth(sprite.getFitWidth())</span><span class="s0">;</span><span class="s1"> 
+        center = </span><span class="s0">new </span><span class="s1">Point2D(sprite.getFitWidth()/</span><span class="s3">2</span><span class="s0">,</span><span class="s1">sprite.getFitHeight()/</span><span class="s3">2</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        getChildren().addAll(sprite)</span><span class="s0">;</span><span class="s1"> 
+        currentVelocity = velocity</span><span class="s0">;</span><span class="s1"> 
+        sprite.setOnMouseClicked(event -&gt; { 
+            </span><span class="s0">if </span><span class="s1">(BTarget != </span><span class="s0">this</span><span class="s1">){
+                BTarget = </span><span class="s0">this;</span><span class="s1">
+                sprite.setImage(active)</span><span class="s0">;</span><span class="s1"> 
+            }</span><span class="s0">else </span><span class="s1">{ 
+                BTarget = </span><span class="s0">null;</span><span class="s1">
+                sprite.setImage(idle)</span><span class="s0">;</span><span class="s1"> 
+            } 
+        })</span><span class="s0">;</span><span class="s1"> 
+    } 
+</span><span class="s4">//     Every tick event</span><span class="s1"> 
+    </span><span class="s0">void </span><span class="s1">update(ArrayList&lt;food.NanoFoodPiece&gt; foodPeaces){
+        satiety-=</span><span class="s3">.001</span><span class="s0">;</span><span class="s1"> 
+        front = </span><span class="s0">new </span><span class="s1">Point2D(getTranslateX()</span><span class="s0">,</span><span class="s1">getTranslateY()).add(center).add(direction.multiply(sprite.getFitWidth()/</span><span class="s3">2</span><span class="s1">))</span><span class="s0">;</span><span class="s1"> 
+        sprite.setImage(BTarget!=</span><span class="s0">this </span><span class="s1">? idle:active)</span><span class="s0">;</span><span class="s1">
+        </span><span class="s0">switch </span><span class="s1">(state){ 
+            </span><span class="s0">case </span><span class="s1">isWait: 
+                waitingT--</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">if </span><span class="s1">(waitingT==</span><span class="s3">0</span><span class="s1">){ 
+                    </span><span class="s0">switch </span><span class="s1">(caller){ 
+                        </span><span class="s0">case </span><span class="s2">&quot;idle&quot;</span><span class="s1">: 
+                            changeState(</span><span class="s2">&quot;idle&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    } 
+                } 
+                </span><span class="s0">break;</span><span class="s1"> 
+            </span><span class="s0">case </span><span class="s1">isRotating: 
+                </span><span class="s0">break;</span><span class="s1"> 
+            </span><span class="s0">case </span><span class="s1">isEating: 
+                satiety=satiety+</span><span class="s3">10</span><span class="s1">&gt;</span><span class="s3">100</span><span class="s1">?</span><span class="s3">100</span><span class="s1">:satiety+</span><span class="s3">10</span><span class="s0">;</span><span class="s1"> 
+                choose.destroy()</span><span class="s0">;</span><span class="s1"> 
+                waitingT = </span><span class="s3">120</span><span class="s0">;</span><span class="s1"> 
+                changeState(</span><span class="s2">&quot;isWait&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                caller = </span><span class="s2">&quot;idle&quot;</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">break;</span><span class="s1"> 
+            </span><span class="s0">case </span><span class="s1">isMoving: 
+                </span><span class="s0">if </span><span class="s1">(front.distance(nextPos)&lt;front.distance(front.add(direction.multiply(currentVelocity)))) { 
+                    </span><span class="s0">switch </span><span class="s1">(caller){ 
+                    </span><span class="s0">case </span><span class="s2">&quot;fs&quot;</span><span class="s1">: 
+                        changeState(</span><span class="s2">&quot;isEating&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                        </span><span class="s0">break;</span><span class="s1"> 
+                    </span><span class="s0">case </span><span class="s2">&quot;idle&quot;</span><span class="s1">: 
+                        changeState(</span><span class="s2">&quot;idle&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                        </span><span class="s0">break;</span><span class="s1"> 
+                    } 
+                    setTranslateY(getTranslateY()+(nextPos.getY()-front.getY()))</span><span class="s0">;</span><span class="s1"> 
+                    setTranslateX(getTranslateX()+(nextPos.getX()-front.getX()))</span><span class="s0">;</span><span class="s1"> 
+                }</span><span class="s0">else </span><span class="s1">{ 
+                    setTranslateY(getTranslateY()+direction.getY()* currentVelocity)</span><span class="s0">;</span><span class="s1"> 
+                    setTranslateX(getTranslateX()+direction.getX()* currentVelocity)</span><span class="s0">;</span><span class="s1"> 
+                } 
+ 
+                </span><span class="s0">break;</span><span class="s1"> 
+            </span><span class="s0">case </span><span class="s1">idle: 
+                currentVelocity = velocity/</span><span class="s3">4</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">if </span><span class="s1">(satiety&lt;</span><span class="s3">5</span><span class="s1">){ 
+                    searchForFood(foodPeaces)</span><span class="s0">;</span><span class="s1"> 
+                    </span><span class="s0">break;</span><span class="s1"> 
+                } 
+                setNextPosition(</span><span class="s0">new </span><span class="s1">Point2D(Math.random()*</span><span class="s3">600</span><span class="s0">, </span><span class="s1">Math.random()*</span><span class="s3">600</span><span class="s1">))</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">break;</span><span class="s1"> 
+        } 
+    } 
+ 
+    </span><span class="s0">private void </span><span class="s1">setNextPosition(Point2D pos) { 
+        </span><span class="s4">//nextPos is using on the method outside(usable)</span><span class="s1"> 
+        nextPos = pos</span><span class="s0">;</span><span class="s1"> 
+        direction = pos.subtract(getTranslateX()+center.getX()</span><span class="s0">,</span><span class="s1">getTranslateY()+center.getY()).normalize()</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">double </span><span class="s1">angle = calculateAngle(direction.getX()</span><span class="s0">, </span><span class="s1">direction.getY())</span><span class="s0">;</span><span class="s1"> 
+        getTransforms().clear()</span><span class="s0">;</span><span class="s1"> 
+        Rotate rotator = </span><span class="s0">new </span><span class="s1">Rotate(angle</span><span class="s0">,</span><span class="s1">center.getX()</span><span class="s0">,</span><span class="s1">center.getY())</span><span class="s0">;</span><span class="s1"> 
+        getTransforms().add(rotator)</span><span class="s0">;</span><span class="s1"> 
+        changeState(</span><span class="s2">&quot;isMoving&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+    } 
+ 
+    </span><span class="s0">boolean </span><span class="s1">canMultiply(){ 
+        </span><span class="s0">return </span><span class="s1">satiety&gt;=</span><span class="s3">20</span><span class="s0">;</span><span class="s1"> 
+    } 
+ 
+    </span><span class="s0">void </span><span class="s1">inherit(){ 
+ 
+    } 
+ 
+    </span><span class="s0">void </span><span class="s1">addModification(entities.bacteria.BMod mod) {
+ 
+        </span><span class="s0">if </span><span class="s1">(!mod.equals(entities.bacteria.BMod.None)){
+            modifications.add(mod)</span><span class="s0">;</span><span class="s1"> 
+            getChildren().add(mod)</span><span class="s0">;</span><span class="s1"> 
+        } 
+        mod.setX(mod.x)</span><span class="s0">;</span><span class="s1"> 
+        mod.setY(mod.y)</span><span class="s0">;</span><span class="s1"> 
+        modifications.remove(entities.bacteria.BMod.None)</span><span class="s0">;</span><span class="s1">
+        satiety -= mod.price</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">if </span><span class="s1">(mod.isOutside)mod.toBack()</span><span class="s0">;</span><span class="s1"> 
+    } 
+</span><span class="s4">//    angle between x axis of entities.bacteria.Bacteria and point with signature declared coordinates</span><span class="s1">
+    </span><span class="s0">private double </span><span class="s1">calculateAngle(</span><span class="s0">double </span><span class="s1">vexX</span><span class="s0">, double </span><span class="s1">vecY){ 
+        </span><span class="s0">double </span><span class="s1">angle = </span><span class="s0">new </span><span class="s1">Point2D(vexX</span><span class="s0">, </span><span class="s1">vecY).angle(</span><span class="s3">1</span><span class="s0">,</span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">return </span><span class="s1">vecY&gt;</span><span class="s3">0</span><span class="s1">?angle:-angle</span><span class="s0">;</span><span class="s1"> 
+    } 
+    </span><span class="s0">private void </span><span class="s1">changeState(String state){ 
+        </span><span class="s0">this</span><span class="s1">.state = entities.bacteria.StateMachine.valueOf(state)</span><span class="s0">;</span><span class="s1">
+    } 
+    </span><span class="s0">void </span><span class="s1">searchForFood(ArrayList&lt;food.NanoFoodPiece&gt; foodList){
+        </span><span class="s0">double </span><span class="s1">previous=</span><span class="s3">100000</span><span class="s0">;</span><span class="s1"> 
+        Point2D selfPosition = </span><span class="s0">new </span><span class="s1">Point2D(getTranslateX()</span><span class="s0">,</span><span class="s1">getTranslateY())</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">for </span><span class="s1">(food.NanoFoodPiece next:foodList) {
+            </span><span class="s0">if </span><span class="s1">(</span><span class="s0">new </span><span class="s1">Point2D(next.getTranslateX()</span><span class="s0">,</span><span class="s1">next.getTranslateY()).distance(selfPosition)&lt;previous){ 
+                previous = selfPosition.distance(</span><span class="s0">new </span><span class="s1">Point2D(next.getTranslateX()</span><span class="s0">,</span><span class="s1">next.getTranslateY()))</span><span class="s0">;</span><span class="s1"> 
+                choose=next</span><span class="s0">;</span><span class="s1"> 
+            } 
+        } 
+        caller = </span><span class="s2">&quot;fs&quot;</span><span class="s0">;</span><span class="s1"> 
+        currentVelocity = velocity</span><span class="s0">;</span><span class="s1"> 
+        setNextPosition(choose.center_g)</span><span class="s0">;</span><span class="s1"> 
+    } 
+    @Override 
+    </span><span class="s0">public </span><span class="s1">String toString() { 
+        String afterMods = </span><span class="s2">&quot;Target:</span><span class="s0">\n</span><span class="s2">Satiety - &quot;</span><span class="s1">+Math.round(satiety)</span><span class="s0">;</span><span class="s1"> 
+        StringBuilder mods = </span><span class="s0">new </span><span class="s1">StringBuilder(</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">Modifications:&quot;</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+        modifications.forEach(mod-&gt; mods.append(</span><span class="s2">&quot;</span><span class="s0">\n</span><span class="s2">-&quot;</span><span class="s1">).append(mod.name))</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">return </span><span class="s1">afterMods+mods</span><span class="s0">;</span><span class="s1"> 
+    } 
+} 
+</span></pre>
+</body>
+</html>

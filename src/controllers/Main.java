@@ -262,7 +262,7 @@ public class Main extends Application {
         bInfoTable.getChildren().add(targetInfo);
         bTools.getChildren().addAll(food,mtp,amd,mcp,focus,deselect);
         MCPTools.getChildren().addAll(MCPFocus,MCPEats,MCPDeselect);
-        primaryStage.setTitle(gL("title", "Game"));
+        primaryStage.setTitle(gL("title", "YE"));
         messageBox.getChildren().add(message);
         loop.start();
         primaryStage.show();

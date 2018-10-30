@@ -12,7 +12,18 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
@@ -29,7 +40,6 @@ public class Main extends Application {
       food searching mechanism (circle - radar) graphical
      */
     private static AnimationTimer loop;
-    public static Stage stage;
     private static boolean isPaused = false;
     private static Properties startProps = new Properties();
     private static Properties langsList = new Properties();
@@ -52,7 +62,6 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        stage=primaryStage;
         try{
             FileInputStream fis = new FileInputStream("controllers/start.properties");
             startProps.load(fis);
@@ -162,6 +171,13 @@ public class Main extends Application {
                         BTarget.showModPane();
                     }catch (NullPointerException e){
                         break;
+                    }
+                    break;
+                case "N":
+                    try {
+                        save();
+                    } catch (ParserConfigurationException | TransformerException e) {
+                        e.printStackTrace();
                     }
                     break;
                 default:
@@ -277,6 +293,30 @@ public class Main extends Application {
         messageBox.getChildren().add(message);
         loop.start();
         primaryStage.show();
+    }
+
+    private static void save() throws ParserConfigurationException, TransformerException {
+        DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document document = documentBuilder.newDocument();
+
+        Element root = document.createElement("SaveFile");
+        document.appendChild(root);
+        Element bacterias = document.createElement("bacterias");
+        root.appendChild(bacterias);
+
+        bMap.forEach(b -> {
+            Element bacteria = document.createElement("bacteria");
+            bacterias.appendChild(bacteria);
+            bacteria.setAttribute("position", b.getTranslateX()+b.getTranslateY()+"");
+            bacteria.setAttribute("satiety", b.getSatiety()+"");
+        });
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(document);
+
+        StreamResult result =  new StreamResult(new File("save.xml"));
+        transformer.transform(source, result);
     }
 
     public static void printMessage(String message) {

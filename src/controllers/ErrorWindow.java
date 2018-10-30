@@ -11,6 +11,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ErrorWindow {
+
+    //    default
+    public static void throwError() {
+        throwError("Error", "Error");
+    }
     //    standard
     public static void throwError(String title, String text) {
         Stage window = new Stage();
@@ -32,16 +37,12 @@ public class ErrorWindow {
         window.showAndWait();
     }
 
-    //    default
-    public static void throwError() {
-        throwError("Error", "Error");
-    }
-
 //    with addictive functionality
     public static void throwError(String title, String messedge, Button... addictiveFunctionality) {
         throwError("Not realized");
     }
 
+//    short
     public static void throwError(String text) {
         throwError("Error", text);
     }

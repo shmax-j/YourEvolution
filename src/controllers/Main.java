@@ -14,7 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
@@ -30,8 +29,10 @@ public class Main extends Application {
       food searching mechanism (circle - radar) graphical
      */
     private static AnimationTimer loop;
+    public static Stage stage;
     private static boolean isPaused = false;
     private static Properties startProps = new Properties();
+    private static Properties langsList = new Properties();
     private static Properties language = new Properties();
     private static BorderPane UIRoot = new BorderPane();
     public static Pane root = new Pane();
@@ -51,6 +52,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        stage=primaryStage;
         try{
             FileInputStream fis = new FileInputStream("controllers/start.properties");
             startProps.load(fis);
@@ -59,10 +61,19 @@ public class Main extends Application {
             throwError("Start properties not founded in /controllers/start.properties(\"start.properties\")");
         }
 
+        try {
+            FileInputStream fis = new FileInputStream("localization/languages.properties");
+            langsList.load(fis);
+            fis.close();
+        } catch (IOException e) {
+            throwError("Languages list not founded in \"localization/languages.properties\"" +
+                    "\nlanguage reset to English");
+        }
+
         localizationInit();
 
-        VBox bTools = new VBox(40);
-        VBox MCPTools = new VBox(40);
+        VBox bTools = new VBox(0);
+        VBox MCPTools = new VBox(0);
         VBox bInfoTable = new VBox(0);
         VBox center = new VBox(5);
 
@@ -85,12 +96,12 @@ public class Main extends Application {
         Image ico_deselect = new Image("controllers/icons/main/deselect.png");
 
 //        Bacteria controls
-        IconButton mtp = new IconButton(ico_multiply);
-        IconButton food = new IconButton(ico_eat);
-        IconButton amd = new IconButton(ico_addModification);
-        IconButton mcp = new IconButton(ico_makeMCP);
-        IconButton focus = new IconButton(ico_cameraFocus);
-        IconButton deselect = new IconButton(ico_deselect);
+        IconButton mtp = new IconButton(ico_multiply, "Multiply");
+        IconButton food = new IconButton(ico_eat, "Eat (E)");
+        IconButton amd = new IconButton(ico_addModification, "Add modification (Tab)");
+        IconButton mcp = new IconButton(ico_makeMCP, "Make MCP");
+        IconButton focus = new IconButton(ico_cameraFocus, "Camera focus (F)");
+        IconButton deselect = new IconButton(ico_deselect, "Deselect");
 
 //        entities.MCP controls
         IconButton MCPFocus = new IconButton(ico_cameraFocus);
@@ -190,16 +201,16 @@ public class Main extends Application {
                 root.getChildren().add(nowTarget);
             }
         });
-        food.setOnMouseClicked(event -> BTarget.searchForFood(foodList));
-        amd.setOnMouseClicked(event -> BTarget.showModPane());
-        mcp.setOnMouseClicked(event -> BTarget.makeMCP(BTarget, BTarget.searchForPartner(bMap)));
-        focus.setOnMouseClicked(event -> targetFocusMode = !targetFocusMode);
-        deselect.setOnMouseClicked(event -> BTarget = null);
+        food.setOnAction(event -> BTarget.searchForFood(foodList));
+        amd.setOnAction(event -> BTarget.showModPane());
+        mcp.setOnAction(event -> BTarget.makeMCP(BTarget, BTarget.searchForPartner(bMap)));
+        focus.setOnAction(event -> targetFocusMode = !targetFocusMode);
+        deselect.setOnAction(event -> BTarget = null);
 
 //        entities.MCP button-controls
-        MCPFocus.setOnMouseClicked(event -> targetFocusMode = !targetFocusMode);
-        MCPEats.setOnMouseClicked(event -> MCPTarget.eat());
-        MCPDeselect.setOnMouseClicked(event -> MCPTarget = null);
+        MCPFocus.setOnAction(event -> targetFocusMode = !targetFocusMode);
+        MCPEats.setOnAction(event -> MCPTarget.eat());
+        MCPDeselect.setOnAction(event -> MCPTarget = null);
 
         loop = new AnimationTimer() {
             @Override
@@ -245,7 +256,7 @@ public class Main extends Application {
                     if (next.isEaten())root.getChildren().remove(next);
                 });
 //                from list
-                foodList.removeIf(nfp -> nfp.isEaten());
+                foodList.removeIf(NanoFoodPiece::isEaten);
 
 //                Camera moving
                 if (cameraMoveF)root.setTranslateY(root.getTranslateY()+cameraSpeed);
@@ -287,26 +298,12 @@ public class Main extends Application {
     }
 
     private static void localizationInit() {
-        FileInputStream languagesFIS;
-        try{
-            languagesFIS = new FileInputStream("localization/languages.properties");
-        }catch (FileNotFoundException l){
-            throwError("File \"languages\" not founded in /localization/");
-            languagesFIS = null;
-        }
-        Properties langsList = new Properties();
         try {
-            langsList.load(languagesFIS);
-        }catch (IOException e){
-            throwError("Cant load localizations list from file \"languages.properties\" in /localization/");
-        }
-        try{
-            language.clear();
-            language.load(new FileInputStream(langsList.getProperty(startProps.getProperty("language"))));
-        } catch (FileNotFoundException e) {
-            throwError("Some localization files don`t founded in /localization/");
-        }catch (IOException e){
-            throwError("Cant load file with selected in start properties localization");
+            FileInputStream langInput = new FileInputStream(langsList.getProperty(startProps.getProperty("language")));
+            language.load(langInput);
+            langInput.close();
+        } catch (IOException e) {
+            throwError("File not founded or was corrupted "+langsList.getProperty(startProps.getProperty("language")));
         }
     }
 

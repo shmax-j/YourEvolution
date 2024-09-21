@@ -1,20 +1,20 @@
-package entities.MCP;
+package shmax.entities.MCP;
 
-import entities.bacteria.Bacteria;
-import food.NanoFoodPiece;
+import shmax.entities.bacteria.Bacteria;
+import shmax.food.NanoFoodPiece;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
 
-import static entities.MCP.Cell.HEIGHT;
-import static entities.MCP.Cell.WIDTH;
-import static entities.MCP.MCPIntentions.feeding;
-import static entities.MCP.MCPIntentions.walking;
-import static entities.MCP.MCPStates.idle;
-import static entities.MCP.MCPStates.isMoving;
-import static controllers.Main.*;
+import static shmax.entities.MCP.Cell.HEIGHT;
+import static shmax.entities.MCP.Cell.WIDTH;
+import static shmax.entities.MCP.MCPIntentions.feeding;
+import static shmax.entities.MCP.MCPIntentions.walking;
+import static shmax.entities.MCP.MCPStates.idle;
+import static shmax.entities.MCP.MCPStates.isMoving;
+import static shmax.controllers.Main.*;
 
 public class MCP extends Pane{
     private int t, r, b, l;//Contains top, right, left and bottom part joined to this
@@ -143,13 +143,13 @@ public void update(){
         }
 //        top_left point alignment
         l_center = new Point2D(minX * WIDTH,minY * HEIGHT);
-//        finding height and width of entities.MCP (in cells)
+//        finding height and width of shmax.entities.MCP (in cells)
         int hCellCount = Math.abs(maxX)+Math.abs(minX);
         int wCellCount = Math.abs(maxY)+Math.abs(minY);
 //        compensation of zero cell
         hCellCount++;
         wCellCount++;
-//        displacement l_center to center of entities.MCP
+//        displacement l_center to center of shmax.entities.MCP
         l_center = new Point2D(l_center.getX()+(hCellCount*(WIDTH/2)),l_center.getY()+(wCellCount*(HEIGHT/2)));
     }
 

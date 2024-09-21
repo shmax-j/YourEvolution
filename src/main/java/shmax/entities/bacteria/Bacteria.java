@@ -1,20 +1,19 @@
-package entities.bacteria;
+package shmax.entities.bacteria;
 
-import controllers.Main;
-import controllers.ModificationsPane;
-import entities.MCP.MCP;
-import food.NanoFoodPiece;
+import shmax.controllers.Main;
+import shmax.controllers.ModificationsPane;
+import shmax.entities.MCP.MCP;
+import shmax.food.NanoFoodPiece;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
-import util.Util;
 
 import java.util.HashSet;
 
-import static controllers.Main.gL;
-import static util.Util.*;
+import static shmax.controllers.Main.gL;
+import static shmax.util.Util.*;
 
 public class Bacteria extends Pane{
     public static ImageView activeCircle = new ImageView(new Image(fisResource("sprites/Active.png")));
@@ -198,7 +197,7 @@ public class Bacteria extends Pane{
 
     public void searchForFood(HashSet<NanoFoodPiece> foodList) {
         if (satiety >= maxSatiety - 1) {
-            Main.printMessage("entities.bacteria.Bacteria is full");
+            Main.printMessage("shmax.entities.bacteria.Bacteria is full");
             return;
         }
         double previous = 1000;
@@ -212,7 +211,7 @@ public class Bacteria extends Pane{
         }
 //        Checking
         if (choose == null) {
-            Main.printMessage("food not founded");
+            Main.printMessage("shmax.food not founded");
         } else {
             caller = "fs";
             currentVelocity = velocity;

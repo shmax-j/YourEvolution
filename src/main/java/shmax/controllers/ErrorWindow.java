@@ -1,4 +1,4 @@
-package controllers;
+package shmax.controllers;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

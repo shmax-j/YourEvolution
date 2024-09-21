@@ -1,12 +1,12 @@
-package entities.MCP;
+package shmax.entities.MCP;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import util.Util;
+import shmax.util.Util;
 
 import java.util.HashMap;
 
-class Cell extends CO {//entities.MCP.Cell - basic part of entities.MCP.entities.MCP
+class Cell extends CO {//shmax.entities.MCP.Cell - basic part of shmax.entities.MCP.shmax.entities.MCP
     final static double WIDTH = 46;
     final static double HEIGHT = 68;
     static HashMap<String, Image> images = new HashMap<>();

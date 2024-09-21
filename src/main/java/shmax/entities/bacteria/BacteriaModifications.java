@@ -1,4 +1,4 @@
-package entities.bacteria;
+package shmax.entities.bacteria;
 
 public enum BacteriaModifications {
     Flagellum(BMod.Flagellum), Nucleus(BMod.Nucleus);

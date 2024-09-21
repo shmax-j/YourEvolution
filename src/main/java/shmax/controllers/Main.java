@@ -1,10 +1,9 @@
-package controllers;
+package shmax.controllers;
 
-import entities.MCP.MCP;
-import entities.bacteria.Bacteria;
-import food.NanoFoodPiece;
+import shmax.entities.MCP.MCP;
+import shmax.entities.bacteria.Bacteria;
+import shmax.food.NanoFoodPiece;
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -14,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import util.Util;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,16 +30,16 @@ import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Properties;
 
-import static controllers.ErrorWindow.throwError;
-import static util.Util.*;
+import static shmax.controllers.ErrorWindow.throwError;
+import static shmax.util.Util.*;
 
 
-public class Main extends Application {
+public class Main {
 
     /*
       Plans
       help under the cursor
-      food searching mechanism (circle - radar) graphical
+      shmax.food searching mechanism (circle - radar) graphical
      */
     private static AnimationTimer loop;
     private static boolean isPaused = false;
@@ -64,7 +62,6 @@ public class Main extends Application {
     private static HBox messageBox = new HBox();
     private static float messageTimer = 20;
 
-    @Override
     public void start(Stage primaryStage) throws URISyntaxException, FileNotFoundException {
         try{
             FileInputStream fis = new FileInputStream(new File(resource("start.properties")));;
@@ -116,7 +113,7 @@ public class Main extends Application {
         IconButton focus = new IconButton(ico_cameraFocus, "Camera focus (F)");
         IconButton deselect = new IconButton(ico_deselect, "Deselect");
 
-//        entities.MCP controls
+//        shmax.entities.MCP controls
         IconButton MCPFocus = new IconButton(ico_cameraFocus);
         IconButton MCPEats = new IconButton(ico_eat);
         IconButton MCPDeselect = new IconButton(ico_deselect);
@@ -227,7 +224,7 @@ public class Main extends Application {
         focus.setOnAction(event -> targetFocusMode = !targetFocusMode);
         deselect.setOnAction(event -> BTarget = null);
 
-//        entities.MCP button-controls
+//        shmax.entities.MCP button-controls
         MCPFocus.setOnAction(event -> targetFocusMode = !targetFocusMode);
         MCPEats.setOnAction(event -> MCPTarget.eat());
         MCPDeselect.setOnAction(event -> MCPTarget = null);
@@ -355,9 +352,5 @@ public class Main extends Application {
 
     public static String gL(String k, String d){
         return language.getProperty(k,d);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

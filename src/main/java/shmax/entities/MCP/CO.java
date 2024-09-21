@@ -1,4 +1,4 @@
-package entities.MCP;
+package shmax.entities.MCP;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;

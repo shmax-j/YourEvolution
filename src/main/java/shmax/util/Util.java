@@ -1,6 +1,6 @@
-package util;
+package shmax.util;
 
-import controllers.Main;
+import shmax.controllers.Main;
 
 import java.io.File;
 import java.io.FileInputStream;

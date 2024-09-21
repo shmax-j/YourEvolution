@@ -1,6 +1,6 @@
-package controllers;
+package shmax.controllers;
 
-import entities.bacteria.BacteriaModifications;
+import shmax.entities.bacteria.BacteriaModifications;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

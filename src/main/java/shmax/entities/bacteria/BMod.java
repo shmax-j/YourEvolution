@@ -1,10 +1,9 @@
-package entities.bacteria;
+package shmax.entities.bacteria;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import util.Util;
 
-import static util.Util.fisResource;
+import static shmax.util.Util.fisResource;
 
 public class BMod extends ImageView{
 //     Классовая система модификаций

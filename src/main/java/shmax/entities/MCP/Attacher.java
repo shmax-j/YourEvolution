@@ -1,4 +1,4 @@
-package entities.MCP;
+package shmax.entities.MCP;
 
 public class Attacher extends CO {
 

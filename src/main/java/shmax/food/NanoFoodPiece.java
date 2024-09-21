@@ -1,6 +1,6 @@
-package food;
+package shmax.food;
 
-import controllers.Main;
+import shmax.controllers.Main;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;

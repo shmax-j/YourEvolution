@@ -1,4 +1,4 @@
-package controllers;
+package shmax.controllers;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;

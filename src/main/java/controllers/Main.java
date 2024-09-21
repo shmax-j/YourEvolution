@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import util.Util;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -25,11 +26,14 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Properties;
 
 import static controllers.ErrorWindow.throwError;
+import static util.Util.*;
 
 
 public class Main extends Application {
@@ -61,21 +65,21 @@ public class Main extends Application {
     private static float messageTimer = 20;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws URISyntaxException, FileNotFoundException {
         try{
-            FileInputStream fis = new FileInputStream("controllers/start.properties");
+            FileInputStream fis = new FileInputStream(new File(resource("start.properties")));;
             startProps.load(fis);
             fis.close();
         }catch (IOException e){
-            throwError("Start properties not founded in /controllers/start.properties(\"start.properties\")");
+            throwError("Start properties not found");
         }
 
         try {
-            FileInputStream fis = new FileInputStream("localization/languages.properties");
+            FileInputStream fis = fisResource("languages/language.properties");
             langsList.load(fis);
             fis.close();
         } catch (IOException e) {
-            throwError("Languages list not founded in \"localization/languages.properties\"" +
+            throwError("Languages list not founded in \"localization/language.properties\"" +
                     "\nlanguage reset to English");
         }
 
@@ -97,12 +101,12 @@ public class Main extends Application {
         MCPTools.setMaxHeight(50);
 
 //        icons init
-        Image ico_multiply = new Image("controllers/icons/bacteria/multiply.png");
-        Image ico_cameraFocus = new Image("controllers/icons/cameraFocus.png");
-        Image ico_eat = new Image("controllers/icons/eat.png");
-        Image ico_addModification = new Image("controllers/icons/bacteria/addModification.png");
-        Image ico_makeMCP = new Image("controllers/icons/bacteria/makeMCP.png");
-        Image ico_deselect = new Image("controllers/icons/main/deselect.png");
+        Image ico_multiply = new Image(fisResource("icons/bacteria/multiply.png"));
+        Image ico_cameraFocus = new Image(fisResource("icons/cameraFocus.png"));
+        Image ico_eat = new Image(fisResource("icons/eat.png"));
+        Image ico_addModification = new Image(fisResource("icons/bacteria/addModification.png"));
+        Image ico_makeMCP = new Image(fisResource("icons/bacteria/makeMCP.png"));
+        Image ico_deselect = new Image(fisResource("icons/main/deselect.png"));
 
 //        Bacteria controls
         IconButton mtp = new IconButton(ico_multiply, "Multiply");
@@ -305,7 +309,7 @@ public class Main extends Application {
         root.appendChild(bacterias);
 
         bMap.forEach(b -> {
-            Element bacteria = document.createElement("bacteria");
+            Element bacteria = document.createElement("sprites/bacteria");
             bacterias.appendChild(bacteria);
             bacteria.setAttribute("position", b.getTranslateX()+b.getTranslateY()+"");
             bacteria.setAttribute("satiety", b.getSatiety()+"");
@@ -339,11 +343,13 @@ public class Main extends Application {
 
     private static void localizationInit() {
         try {
-            FileInputStream langInput = new FileInputStream(langsList.getProperty(startProps.getProperty("language")));
+            FileInputStream langInput = new FileInputStream(new File(resource(langsList.getProperty(startProps.getProperty("language")))));
             language.load(langInput);
             langInput.close();
         } catch (IOException e) {
             throwError("File not founded or was corrupted "+langsList.getProperty(startProps.getProperty("language")));
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
         }
     }
 

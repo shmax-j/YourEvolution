@@ -1,7 +1,6 @@
 package entities.MCP;
 
 import entities.bacteria.Bacteria;
-import com.sun.istack.internal.NotNull;
 import food.NanoFoodPiece;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
@@ -46,7 +45,7 @@ public class MCP extends Pane{
         render();
     }
 
-    private void moveToPoint(@NotNull Point2D point){
+    private void moveToPoint(Point2D point){
         this.movingPoint = point;
         Point2D direction = point.subtract(g_center.getX(),g_center.getY()).normalize();
         switch (intention){

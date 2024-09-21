@@ -9,13 +9,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Rotate;
+import util.Util;
 
 import java.util.HashSet;
 
 import static controllers.Main.gL;
+import static util.Util.*;
 
 public class Bacteria extends Pane{
-    public static ImageView activeCircle = new ImageView(new Image("res/Active.png"));
+    public static ImageView activeCircle = new ImageView(new Image(fisResource("sprites/Active.png")));
 
     public HashSet<BMod> modifications = new HashSet<>();
 
@@ -32,7 +34,7 @@ public class Bacteria extends Pane{
     private StateMachine state = StateMachine.idle;
     public boolean remove = false;
     private Point2D nextPos;
-    private ImageView sprite = new ImageView(new Image("res/Bacteria1.png"));
+    private ImageView sprite = new ImageView(new Image(fisResource("sprites/bacteria/Bacteria1.png")));
 
     private Bacteria partner;
     private boolean isWaitingForPartner;
@@ -81,8 +83,8 @@ public class Bacteria extends Pane{
 
     //     Every tick event
     public void update(HashSet<NanoFoodPiece> foodPeaces) {
-        if (Main.BTarget != this && getChildren().contains(activeCircle)) getChildren().remove(activeCircle);
-        satiety -= .006;
+        if (Main.BTarget != this) getChildren().remove(activeCircle);
+        satiety -= .006F;
         Point2D front = new Point2D(getTranslateX(), getTranslateY()).add(direction.multiply(sprite.getFitWidth() / 2));
         switch (state) {
             case isWait:
@@ -294,11 +296,7 @@ public class Bacteria extends Pane{
         sprite.setOnMouseClicked(event -> {
             if (Main.BTarget != this) {
                 Main.BTarget = this;
-                Main.bMap.forEach(next -> {
-                    if (next.getChildren().contains(activeCircle)) {
-                        next.getChildren().remove(activeCircle);
-                    }
-                });
+                Main.bMap.forEach(next -> next.getChildren().remove(activeCircle));
                 getChildren().add(activeCircle);
             } else {
                 Main.BTarget = null;

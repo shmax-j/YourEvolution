@@ -2,29 +2,30 @@ package shmax.entities.MCP;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import shmax.util.Util;
 
 import java.util.HashMap;
+
+import static shmax.util.UtilKt.fisResource;
 
 class Cell extends CO {//shmax.entities.MCP.Cell - basic part of shmax.entities.MCP.shmax.entities.MCP
     final static double WIDTH = 46;
     final static double HEIGHT = 68;
     static HashMap<String, Image> images = new HashMap<>();
-    private final static Image CENTER = new Image(Util.fisResource("sprites/bacteria/Bacteria_Center.png"));
-    private final static Image TOP = new Image(Util.fisResource("sprites/bacteria/Bacteria_Top.png"));
-    private final static Image BOTTOM = new Image(Util.fisResource("sprites/bacteria/Bacteria_Bottom.png"));
-    private final static Image RIGHT = new Image(Util.fisResource("sprites/bacteria/Bacteria_Right.png"));
-    private final static Image LEFT = new Image(Util.fisResource("sprites/bacteria/Bacteria_Left.png"));
-    private final static Image TOP_RIGHT = new Image(Util.fisResource("sprites/bacteria/Bacteria_TopRight.png"));
-    private final static Image TOP_LEFT = new Image(Util.fisResource("sprites/bacteria/Bacteria_TopLeft.png"));
-    private final static Image BOTTOM_RIGHT = new Image(Util.fisResource("sprites/bacteria/Bacteria_BottomRight.png"));
-    private final static Image BOTTOM_LEFT = new Image(Util.fisResource("sprites/bacteria/Bacteria_BottomLeft.png"));
-    private final static Image TOP_TOP = new Image(Util.fisResource("sprites/bacteria/Bacteria_TopTop.png"));
-    private final static Image BOTTOM_BOTTOM = new Image(Util.fisResource("sprites/bacteria/Bacteria_BottomBottom.png"));
-    private final static Image RIGHT_RIGHT = new Image(Util.fisResource("sprites/bacteria/Bacteria_RightRight.png"));
-    private final static Image LEFT_LEFT = new Image(Util.fisResource("sprites/bacteria/Bacteria_LeftLeft.png"));
-    private final static Image TOP_BOTTOM = new Image(Util.fisResource("sprites/bacteria/Bacteria_TopBottom.png"));
-    private final static Image RIGHT_LEFT = new Image(Util.fisResource("sprites/bacteria/Bacteria_RightLeft.png"));
+    private final static Image CENTER = new Image(fisResource("sprites/bacteria/Bacteria_Center.png"));
+    private final static Image TOP = new Image(fisResource("sprites/bacteria/Bacteria_Top.png"));
+    private final static Image BOTTOM = new Image(fisResource("sprites/bacteria/Bacteria_Bottom.png"));
+    private final static Image RIGHT = new Image(fisResource("sprites/bacteria/Bacteria_Right.png"));
+    private final static Image LEFT = new Image(fisResource("sprites/bacteria/Bacteria_Left.png"));
+    private final static Image TOP_RIGHT = new Image(fisResource("sprites/bacteria/Bacteria_TopRight.png"));
+    private final static Image TOP_LEFT = new Image(fisResource("sprites/bacteria/Bacteria_TopLeft.png"));
+    private final static Image BOTTOM_RIGHT = new Image(fisResource("sprites/bacteria/Bacteria_BottomRight.png"));
+    private final static Image BOTTOM_LEFT = new Image(fisResource("sprites/bacteria/Bacteria_BottomLeft.png"));
+    private final static Image TOP_TOP = new Image(fisResource("sprites/bacteria/Bacteria_TopTop.png"));
+    private final static Image BOTTOM_BOTTOM = new Image(fisResource("sprites/bacteria/Bacteria_BottomBottom.png"));
+    private final static Image RIGHT_RIGHT = new Image(fisResource("sprites/bacteria/Bacteria_RightRight.png"));
+    private final static Image LEFT_LEFT = new Image(fisResource("sprites/bacteria/Bacteria_LeftLeft.png"));
+    private final static Image TOP_BOTTOM = new Image(fisResource("sprites/bacteria/Bacteria_TopBottom.png"));
+    private final static Image RIGHT_LEFT = new Image(fisResource("sprites/bacteria/Bacteria_RightLeft.png"));
 
     Cell(int x, int y) {
         super(x,y);

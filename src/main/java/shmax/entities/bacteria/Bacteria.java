@@ -13,7 +13,7 @@ import javafx.scene.transform.Rotate;
 import java.util.HashSet;
 
 import static shmax.controllers.Main.gL;
-import static shmax.util.Util.*;
+import static shmax.util.UtilKt.*;
 
 public class Bacteria extends Pane{
     public static ImageView activeCircle = new ImageView(new Image(fisResource("sprites/Active.png")));

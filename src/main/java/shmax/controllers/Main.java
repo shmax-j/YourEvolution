@@ -30,8 +30,8 @@ import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Properties;
 
-import static shmax.controllers.ErrorWindow.throwError;
-import static shmax.util.Util.*;
+import static shmax.ErrorWindowKt.throwError;
+import static shmax.util.UtilKt.*;
 
 
 public class Main {
@@ -76,7 +76,7 @@ public class Main {
             langsList.load(fis);
             fis.close();
         } catch (IOException e) {
-            throwError("Languages list not founded in \"localization/language.properties\"" +
+            throwError("Languages list not found in \"localization/language.properties\"" +
                     "\nlanguage reset to English");
         }
 
@@ -345,8 +345,6 @@ public class Main {
             langInput.close();
         } catch (IOException e) {
             throwError("File not founded or was corrupted "+langsList.getProperty(startProps.getProperty("language")));
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
         }
     }
 

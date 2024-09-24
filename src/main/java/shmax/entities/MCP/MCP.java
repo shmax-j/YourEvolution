@@ -87,7 +87,7 @@ public void update(){
                         break;
                     case feeding:
                         satiety += 10;
-                        tgFood.destroy();
+                        tgFood.setEaten(true);
                         state = idle;
                 }
             }

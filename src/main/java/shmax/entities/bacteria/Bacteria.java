@@ -1,7 +1,6 @@
 package shmax.entities.bacteria;
 
 import shmax.controllers.Main;
-import shmax.controllers.ModificationsPane;
 import shmax.entities.MCP.MCP;
 import shmax.food.NanoFoodPiece;
 import javafx.geometry.Point2D;
@@ -20,7 +19,6 @@ public class Bacteria extends Pane{
 
     public HashSet<BMod> modifications = new HashSet<>();
 
-    private ModificationsPane mp = new ModificationsPane();
     private Point2D position;
     private String caller = "idle";
     private Point2D direction = new Point2D(0, 0);
@@ -180,11 +178,6 @@ public class Bacteria extends Pane{
         if (mod.isOutside) mod.toBack();
     }
 
-    public void showModPane() {
-        mp.reinitializeAndShow();
-    }
-
-
     //    angle between x axis of bacteria and point with signature declared coordinates
     private double calculateAngle(double vexX, double vecY) {
         double angle = new Point2D(vexX, vecY).angle(1, 0);
@@ -221,7 +214,7 @@ public class Bacteria extends Pane{
 
     private void eats() {
         satiety = (float) (satiety + choose.getFoodValue() > maxSatiety ? maxSatiety : satiety + choose.getFoodValue() * 10);
-        choose.destroy();
+        choose.setEaten(true);
         waitingT = 120;
         changeState("isWait");
         caller = "idle";

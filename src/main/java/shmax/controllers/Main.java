@@ -32,6 +32,7 @@ import java.util.Properties;
 
 import static shmax.ErrorWindowKt.throwError;
 import static shmax.util.UtilKt.*;
+import static shmax.controllers.AddModificationModalKt.*;
 
 
 public class Main {
@@ -169,7 +170,7 @@ public class Main {
                     break;
                 case "Tab":
                     try {
-                        BTarget.showModPane();
+                        showAddModificationModal();
                     }catch (NullPointerException e){
                         break;
                     }
@@ -219,7 +220,7 @@ public class Main {
             }
         });
         food.setOnAction(event -> BTarget.searchForFood(foodList));
-        amd.setOnAction(event -> BTarget.showModPane());
+        amd.setOnAction(event -> showAddModificationModal());
         mcp.setOnAction(event -> BTarget.makeMCP(BTarget, BTarget.searchForPartner(bMap)));
         focus.setOnAction(event -> targetFocusMode = !targetFocusMode);
         deselect.setOnAction(event -> BTarget = null);
@@ -270,10 +271,10 @@ public class Main {
 //                Removing from root
                 foodList.forEach(next -> {
                     next.toBack();
-                    if (next.isEaten())root.getChildren().remove(next);
+                    if (next.getEaten())root.getChildren().remove(next);
                 });
 //                from list
-                foodList.removeIf(NanoFoodPiece::isEaten);
+                foodList.removeIf(NanoFoodPiece::getEaten);
 
 //                Camera moving
                 if (cameraMoveF)root.setTranslateY(root.getTranslateY()+cameraSpeed);

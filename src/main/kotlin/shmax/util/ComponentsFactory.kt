@@ -53,8 +53,9 @@ fun Pane.label(text: String) {
     children.add(label)
 }
 
-fun Pane.button(text: String, onAction: EventHandler<ActionEvent>) {
+fun Pane.button(text: String, disabled: Boolean = false, onAction: EventHandler<ActionEvent>) {
     val button = Button(text)
     button.onAction = onAction
+    button.isDisable = disabled
     children.add(button)
 }

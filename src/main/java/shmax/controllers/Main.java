@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Properties;
 
 import static shmax.ErrorWindowKt.throwError;
+import static shmax.component.ComponentKt.iconButton;
 import static shmax.util.UtilKt.*;
 import static shmax.controllers.AddModificationModalKt.*;
 
@@ -107,17 +108,17 @@ public class Main {
         Image ico_deselect = new Image(fisResource("icons/main/deselect.png"));
 
 //        Bacteria controls
-        IconButton mtp = new IconButton(ico_multiply, "Multiply");
-        IconButton food = new IconButton(ico_eat, "Eat (E)");
-        IconButton amd = new IconButton(ico_addModification, "Add modification (Tab)");
-        IconButton mcp = new IconButton(ico_makeMCP, "Make MCP");
-        IconButton focus = new IconButton(ico_cameraFocus, "Camera focus (F)");
-        IconButton deselect = new IconButton(ico_deselect, "Deselect");
+        var mtp = iconButton(ico_multiply, "Multiply");
+        var food = iconButton(ico_eat, "Eat (E)");
+        var amd = iconButton(ico_addModification, "Add modification (Tab)");
+        var mcp = iconButton(ico_makeMCP, "Make MCP");
+        var focus = iconButton(ico_cameraFocus, "Camera focus (F)");
+        var deselect = iconButton(ico_deselect, "Deselect");
 
 //        shmax.entities.MCP controls
-        IconButton MCPFocus = new IconButton(ico_cameraFocus);
-        IconButton MCPEats = new IconButton(ico_eat);
-        IconButton MCPDeselect = new IconButton(ico_deselect);
+        var MCPFocus = iconButton(ico_cameraFocus);
+        var MCPEats = iconButton(ico_eat);
+        var MCPDeselect = iconButton(ico_deselect);
 
         Label targetInfo = new Label("Choose the target.");
 

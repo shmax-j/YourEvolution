@@ -1,4 +1,4 @@
-package shmax.util
+package shmax.component
 
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
@@ -32,7 +32,7 @@ fun Pane.vBox(
     padding: Insets = Insets(0.0, 0.0, 0.0, 0.0),
     block: VBox.() -> Unit) {
 
-    children.add(shmax.util.vBox(spacing, alignment, padding, block))
+    children.add(shmax.component.vBox(spacing, alignment, padding, block))
 }
 
 fun vBox(
@@ -53,9 +53,13 @@ fun Pane.label(text: String) {
     children.add(label)
 }
 
-fun Pane.button(text: String, disabled: Boolean = false, onAction: EventHandler<ActionEvent>) {
+fun button(text: String = "", disabled: Boolean = false, block: Button.() -> Unit): Button {
     val button = Button(text)
-    button.onAction = onAction
     button.isDisable = disabled
-    children.add(button)
+    button.block()
+    return button
+}
+
+fun Pane.button(text: String, disabled: Boolean = false, block: Button.() -> Unit) {
+    children.add(shmax.component.button(text, disabled, block))
 }

@@ -4,9 +4,9 @@ import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import shmax.entities.bacteria.BacteriaModifications
-import shmax.util.button
-import shmax.util.stage
-import shmax.util.vBox
+import shmax.component.button
+import shmax.component.stage
+import shmax.component.vBox
 
 fun showAddModificationModal() = stage(
     title = "Add modification"

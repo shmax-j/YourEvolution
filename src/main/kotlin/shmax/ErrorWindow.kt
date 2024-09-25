@@ -4,10 +4,10 @@ import javafx.geometry.Insets
 import javafx.scene.layout.VBox
 import javafx.stage.Modality
 import javafx.stage.Stage
-import shmax.util.button
-import shmax.util.label
-import shmax.util.stage
-import shmax.util.vBox
+import shmax.component.button
+import shmax.component.label
+import shmax.component.stage
+import shmax.component.vBox
 
 @JvmOverloads
 fun throwError(title: String = "Error", message: String = "Unknown Error",

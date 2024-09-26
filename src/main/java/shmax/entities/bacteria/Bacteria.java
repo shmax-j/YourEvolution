@@ -2,6 +2,8 @@ package shmax.entities.bacteria;
 
 import shmax.controllers.Main;
 import shmax.entities.MCP.MCP;
+import shmax.entity.bacteria.BacteriaModification;
+import shmax.entity.bacteria.BacteriaModificationDef;
 import shmax.food.NanoFoodPiece;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
@@ -17,7 +19,7 @@ import static shmax.util.UtilKt.*;
 public class Bacteria extends Pane{
     public static ImageView activeCircle = new ImageView(new Image(fisResource("sprites/Active.png")));
 
-    public HashSet<BMod> modifications = new HashSet<>();
+    public HashSet<BacteriaModification> modifications = new HashSet<>();
 
     private Point2D position;
     private String caller = "idle";
@@ -46,7 +48,7 @@ public class Bacteria extends Pane{
         sprite.setX(-(sprite.getFitWidth() / 2));
         sprite.setY(-(sprite.getFitHeight() / 2));
 
-        modifications.add(BMod.None);
+        modifications.add(new BacteriaModification(BacteriaModificationDef.NONE));
 
         activeCircle.setFitHeight(75);
         activeCircle.setFitWidth(75);
@@ -166,16 +168,14 @@ public class Bacteria extends Pane{
         });
     }
 
-    public void addModification(BMod mod) {
-        if (!mod.equals(BMod.None)) {
+    public void addModification(BacteriaModification mod) {
+        if (!mod.getDef().equals(BacteriaModificationDef.NONE)) {
             modifications.add(mod);
             getChildren().add(mod);
         }
-        mod.setX(mod.x);
-        mod.setY(mod.y);
-        modifications.remove(BMod.None);
-        satiety -= mod.price;
-        if (mod.isOutside) mod.toBack();
+        modifications.removeIf((it) -> it.getDef() == BacteriaModificationDef.NONE);
+        satiety -= mod.getDef().getPrice();
+        if (mod.getDef().getOutside()) mod.toBack();
     }
 
     //    angle between x axis of bacteria and point with signature declared coordinates
@@ -272,7 +272,7 @@ public class Bacteria extends Pane{
         sprite.setFitWidth(276 * .25);
         sprite.setX(-(sprite.getFitWidth() / 2));
         sprite.setY(-(sprite.getFitHeight() / 2));
-        modifications.add(BMod.None);
+        modifications.add(new BacteriaModification(BacteriaModificationDef.NONE));
         setTranslateX(x);
         setTranslateY(y);
 
@@ -306,7 +306,7 @@ public class Bacteria extends Pane{
     public String toString() {
         String beforeMods = gL("target", "Target") + ":\n" + gL("satiety", "Satiety") + " - " + Math.round(satiety);
         StringBuilder mods = new StringBuilder("\n" + gL("modifications", "Modifications"));
-        modifications.forEach(mod -> mods.append("\n-").append(mod.name));
+        modifications.forEach(mod -> mods.append("\n-").append(mod.getDef().getLabel()));
         return beforeMods + mods;
     }
 

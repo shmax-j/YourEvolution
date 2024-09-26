@@ -3,10 +3,11 @@ package shmax.controllers
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.geometry.Pos
-import shmax.entities.bacteria.BacteriaModifications
 import shmax.component.button
 import shmax.component.stage
 import shmax.component.vBox
+import shmax.entity.bacteria.BacteriaModification
+import shmax.entity.bacteria.BacteriaModificationDef
 
 fun showAddModificationModal() = stage(
     title = "Add modification"
@@ -25,18 +26,20 @@ fun showAddModificationModal() = stage(
             }
         }
 
-        BacteriaModifications.entries.forEach { modification ->
-            val alreadyInstalled = modification.mod in Main.BTarget.modifications
-            val notEnoughSatiety = Main.BTarget.satiety < modification.mod.price
+        BacteriaModificationDef.entries.forEach { modification ->
+            val alreadyInstalled = Main.BTarget.modifications.any { it.def == modification }
+            val notEnoughSatiety = Main.BTarget.satiety < modification.price
 
             button(
                 text = modification.name,
-                disabled = alreadyInstalled or notEnoughSatiety) {
+                disabled = alreadyInstalled or notEnoughSatiety){
+                onAction = EventHandler {
 
-                Main.BTarget.addModification(modification.mod)
+                    Main.BTarget.addModification(BacteriaModification(modification))
 
-                Main.resume()
-                close()
+                    Main.resume()
+                    close()
+                }
             }
         }
     }

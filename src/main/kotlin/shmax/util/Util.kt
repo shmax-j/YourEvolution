@@ -1,7 +1,10 @@
 package shmax.util
 
+import javafx.geometry.Point2D
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.layout.Pane
+import javafx.scene.transform.Rotate
 import shmax.controllers.Main
 import java.io.File
 import java.io.FileInputStream
@@ -24,4 +27,25 @@ inline fun <reified T> res(path: String?): T {
             throw IllegalArgumentException("Unsupported resource type: ${T::class.java}")
         }
     }
+}
+
+operator fun Point2D.minus(other: Point2D?): Point2D = subtract(other)
+operator fun Point2D.plus(other: Point2D): Point2D = add(other)
+
+operator fun Point2D.times(factor: Double): Point2D = multiply(factor)
+operator fun Point2D.div(factor: Double): Point2D = multiply(factor)
+
+var Pane.translatePosition: Point2D
+    get() = Point2D(translateX, translateY)
+    set(value) {
+        translateX = value.x
+        translateY = value.y
+    }
+
+
+fun Pane.rotateToPoint(point: Point2D) {
+    val angle = point.angle(.0, -1.0)
+    val completeAngle = if (point.x > 0) angle else -angle
+    transforms.clear()
+    transforms.add(Rotate(completeAngle, point.x, point.y))
 }

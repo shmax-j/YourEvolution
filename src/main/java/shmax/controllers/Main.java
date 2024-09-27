@@ -1,7 +1,7 @@
 package shmax.controllers;
 
-import shmax.entities.MCP.MCP;
 import shmax.entities.bacteria.Bacteria;
+import shmax.entity.MultiCellularOrganism;
 import shmax.food.NanoFoodPiece;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Pos;
@@ -54,9 +54,9 @@ public class Main {
     private static boolean targetFocusMode = false;
     public static HashSet<NanoFoodPiece> foodList = new HashSet<>();
     public static HashSet<Bacteria> bMap = new HashSet<>();
-    public static HashSet<MCP> mcpMap = new HashSet<>();
+    public static HashSet<MultiCellularOrganism> mcpMap = new HashSet<>();
     public static Bacteria BTarget;
-    public static MCP MCPTarget;
+    public static MultiCellularOrganism MCPTarget;
     private boolean cameraMoveF, cameraMoveB, cameraMoveR, cameraMoveL;
     private byte cameraSpeed = 2;
 
@@ -228,7 +228,7 @@ public class Main {
 
 //        shmax.entities.MCP button-controls
         MCPFocus.setOnAction(event -> targetFocusMode = !targetFocusMode);
-        MCPEats.setOnAction(event -> MCPTarget.eat());
+        MCPEats.setOnAction(event -> MCPTarget.searchForFood());
         MCPDeselect.setOnAction(event -> MCPTarget = null);
 
         loop = new AnimationTimer() {
@@ -238,7 +238,7 @@ public class Main {
 
 //                Updates
                 bMap.forEach(tag ->tag.update(foodList));
-                mcpMap.forEach(MCP::update);
+                mcpMap.forEach(MultiCellularOrganism::update);
 
                 UIRoot.setRight(BTarget !=null?bTools: MCPTarget !=null?MCPTools:null);
 

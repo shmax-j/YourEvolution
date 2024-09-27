@@ -1,7 +1,7 @@
 package shmax.entities.bacteria;
 
 import shmax.controllers.Main;
-import shmax.entities.MCP.MCP;
+import shmax.entity.MultiCellularOrganism;
 import shmax.entity.bacteria.BacteriaModification;
 import shmax.entity.bacteria.BacteriaModificationDef;
 import shmax.food.NanoFoodPiece;
@@ -251,7 +251,7 @@ public class Bacteria extends Pane{
     }
 
     private void bornMcp() {
-        MCP nmcp = new MCP();
+        MultiCellularOrganism nmcp = new MultiCellularOrganism();
         nmcp.setTranslateX(Main.BTarget.getTranslateX());
         nmcp.setTranslateY(Main.BTarget.getTranslateY());
         Main.mcpMap.add(nmcp);

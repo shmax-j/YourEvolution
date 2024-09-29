@@ -1,11 +1,13 @@
-package shmax.entity
+package shmax.entity.cellular
 
 import javafx.event.EventHandler
 import javafx.geometry.Point2D
 import javafx.scene.layout.Pane
 import shmax.controllers.Main
 import shmax.controllers.Main.gL
-import shmax.entities.bacteria.Bacteria
+import shmax.entity.OrganismIntention
+import shmax.entity.OrganismState
+import shmax.entity.bacteria.Bacteria
 import shmax.food.NanoFoodPiece
 import shmax.util.*
 import kotlin.math.abs

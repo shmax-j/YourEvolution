@@ -1,7 +1,7 @@
 package shmax.controllers;
 
-import shmax.entities.bacteria.Bacteria;
-import shmax.entity.MultiCellularOrganism;
+import shmax.entity.bacteria.Bacteria;
+import shmax.entity.cellular.MultiCellularOrganism;
 import shmax.food.NanoFoodPiece;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Pos;
@@ -130,7 +130,7 @@ public class Main {
         primaryStage.setScene(scene);
 
         //First item initialization
-        Bacteria bt = new Bacteria(scene.getWidth()/2, scene.getHeight()/2);
+        Bacteria bt = new Bacteria(scene.getWidth()/2, scene.getHeight()/2, null);
         NanoFoodPiece ft = new NanoFoodPiece();
         bMap.add(bt);
         foodList.add(ft);
@@ -213,7 +213,7 @@ public class Main {
 //        Bacteria button-controls
         mtp.setOnMouseClicked(event -> {
             if (BTarget.canMultiply()){
-                BTarget.updateInhInfo();
+                BTarget.updateInheritanceInfo();
                 BTarget.setSatiety(BTarget.getSatiety()/2);
                 Bacteria nowTarget = new Bacteria(BTarget.getTranslateX(), BTarget.getTranslateY(), BTarget);
                 bMap.add(nowTarget);
@@ -222,7 +222,7 @@ public class Main {
         });
         food.setOnAction(event -> BTarget.searchForFood(foodList));
         amd.setOnAction(event -> showAddModificationModal());
-        mcp.setOnAction(event -> BTarget.makeMCP(BTarget, BTarget.searchForPartner(bMap)));
+        mcp.setOnAction(event -> BTarget.makeMultiCellularOrganism(BTarget, BTarget.searchForPartner(bMap)));
         focus.setOnAction(event -> targetFocusMode = !targetFocusMode);
         deselect.setOnAction(event -> BTarget = null);
 
@@ -234,7 +234,7 @@ public class Main {
         loop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                bMap.removeIf(r->r.remove);
+                bMap.removeIf(Bacteria::getRemove);
 
 //                Updates
                 bMap.forEach(tag ->tag.update(foodList));

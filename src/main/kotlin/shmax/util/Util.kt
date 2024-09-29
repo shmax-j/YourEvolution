@@ -9,6 +9,7 @@ import shmax.controllers.Main
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
+import kotlin.random.Random
 
 fun resource(path: String?) =
     Main::class.java.classLoader.getResource(path)?.toURI() ?: throw FileNotFoundException(path)
@@ -31,6 +32,7 @@ inline fun <reified T> res(path: String?): T {
 
 operator fun Point2D.minus(other: Point2D?): Point2D = subtract(other)
 operator fun Point2D.plus(other: Point2D): Point2D = add(other)
+operator fun Point2D.plus(other: Double): Point2D = Point2D(this.x + other, this.y + other)
 
 operator fun Point2D.times(factor: Double): Point2D = multiply(factor)
 operator fun Point2D.div(factor: Double): Point2D = multiply(factor)
@@ -49,3 +51,5 @@ fun Pane.rotateToPoint(point: Point2D) {
     transforms.clear()
     transforms.add(Rotate(completeAngle, point.x, point.y))
 }
+
+fun rollChance(max: Int) = Random.nextInt(max)

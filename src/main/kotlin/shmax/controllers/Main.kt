@@ -159,7 +159,7 @@ class Main {
                 }
             }
 
-            iconButton(feedIcon, "Feed") {
+            iconButton(feedIcon, " Feed") {
                 onAction = EventHandler {
                     bacteriaTarget?.searchForFood(foodList)
                 }

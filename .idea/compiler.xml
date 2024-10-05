@@ -12,5 +12,6 @@
       <entry name="!?*.clj" />
       <entry name="!?*.css" />
     </wildcardResourcePatterns>
+    <bytecodeTargetLevel target="21" />
   </component>
 </project>

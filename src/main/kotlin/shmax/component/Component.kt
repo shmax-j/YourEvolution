@@ -1,6 +1,7 @@
 package shmax.component
 
 import javafx.event.EventHandler
+import javafx.scene.control.Button
 import javafx.scene.control.Tooltip
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
@@ -10,7 +11,7 @@ const val ICON_IMAGE_SIZE = 40.0
 @JvmOverloads
 fun iconButton(image: Image,
                tooltipText: String? = null,
-               block: ImageView.() -> Unit = {}) = button {
+               block: Button.() -> Unit = {}) = button {
     val imageView = ImageView(image)
     graphic = imageView
 
@@ -30,4 +31,6 @@ fun iconButton(image: Image,
     if (tooltipText != null) {
         tooltip = Tooltip(tooltipText)
     }
+
+    block()
 }

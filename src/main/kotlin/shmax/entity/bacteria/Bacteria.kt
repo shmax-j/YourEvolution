@@ -60,8 +60,8 @@ class Bacteria(
         graphics.fitWidth = GRAPHICS_WIDTH
         graphics.fitHeight = GRAPHICS_HEIGHT
 
-        graphics.x = GRAPHICS_WIDTH / 2
-        graphics.y = GRAPHICS_HEIGHT / 2
+        graphics.x = -GRAPHICS_WIDTH / 2
+        graphics.y = -GRAPHICS_HEIGHT / 2
 
         modifications += BacteriaModification(BacteriaModificationDef.NONE)
 
@@ -110,7 +110,7 @@ class Bacteria(
                 moveToPoint(translatePosition + Random.nextDouble(700.0, 1400.0))
             }
             OrganismState.MOVING -> {
-                if (caller == "fs" && foodTarget !in Main.root.children) {
+                if (caller == "fs" && foodTarget !in Main.objectRoot.children) {
                     searchForFood(Main.foodList)
                 }
                 if (frontVector.distance(movingTarget) < frontVector.distance(frontVector + (direction * currentVelocity))) {
@@ -267,7 +267,7 @@ class Bacteria(
         val organism = MultiCellularOrganism()
         organism.translatePosition = Main.bacteriaTarget!!.translatePosition
         Main.multiCellularList.add(organism)
-        Main.root.children.add(organism)
+        Main.objectRoot.children.add(organism)
         if (Main.bacteriaTarget == this || Main.bacteriaTarget == partnerTarget) {
             destroy()
             partnerTarget!!.destroy()
@@ -281,7 +281,7 @@ class Bacteria(
     }
 
     private fun destroy() {
-        Main.root.children.remove(this)
+        Main.objectRoot.children.remove(this)
         remove = true
     }
 

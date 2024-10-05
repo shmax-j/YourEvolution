@@ -9,6 +9,7 @@ import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.Background
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import shmax.component.iconButton
 import shmax.component.stage
@@ -20,7 +21,7 @@ import shmax.util.*
 
 class Main {
     companion object {
-        val root: BorderPane by lazy { lazyRoot ?: BorderPane() }
+        val objectRoot = Pane()
         var lazyRoot: BorderPane? = null
         var loop: AnimationTimer? = null
         var onPause = false
@@ -51,16 +52,20 @@ class Main {
 
         fun printMessage(text: String) {
             message.text = text
+            messageTimer = 50
         }
 
         fun pause() {
-            paused = false
-            loop?.start()
+            paused = true
+            printMessage("Paused")
+            messageTimer = -1
+            loop?.stop()
         }
 
         fun resume() {
-            paused = true
-            loop?.stop()
+            paused = false
+            printMessage("Resumed")
+            loop?.start()
         }
 
         fun gL(key: String): String {
@@ -75,26 +80,52 @@ class Main {
         sceneFill = Color.rgb(202, 239, 242)
     ) { root ->
         lazyRoot = root
+        root.children.add(objectRoot)
+
+        root.bottom = message
+
         root.scene.onKeyPressed = EventHandler { event ->
             when (event.code) {
                 KeyCode.W -> {
                     targetFocusMode = false
-                    cameraDirection = Point2D(cameraDirection.x, -1.0)
+                    cameraDirection = Point2D(cameraDirection.x, 1.0)
                 }
                 KeyCode.S -> {
                     targetFocusMode = false
-                    cameraDirection = Point2D(cameraDirection.x, 1.0)
+                    cameraDirection = Point2D(cameraDirection.x, -1.0)
                 }
                 KeyCode.D -> {
                     targetFocusMode = false
-                    cameraDirection = Point2D(1.0, cameraDirection.y)
+                    cameraDirection = Point2D(-1.0, cameraDirection.y)
                 }
                 KeyCode.A -> {
                     targetFocusMode = false
-                    cameraDirection = Point2D(-1.0, cameraDirection.y)
+                    cameraDirection = Point2D(1.0, cameraDirection.y)
                 }
                 KeyCode.SHIFT -> {
                     cameraSpeed = 5.0
+                }
+
+                else -> {}
+            }
+        }
+
+        root.scene.onKeyReleased = EventHandler { event ->
+            when (event.code) {
+                KeyCode.W -> {
+                    cameraDirection = Point2D(cameraDirection.x, .0)
+                }
+                KeyCode.S -> {
+                    cameraDirection = Point2D(cameraDirection.x, .0)
+                }
+                KeyCode.D -> {
+                    cameraDirection = Point2D(.0, cameraDirection.y)
+                }
+                KeyCode.A -> {
+                    cameraDirection = Point2D(.0, cameraDirection.y)
+                }
+                KeyCode.SHIFT -> {
+                    cameraSpeed = 2.0
                 }
                 KeyCode.P -> {
                     if (paused) resume() else pause()
@@ -111,7 +142,7 @@ class Main {
 
             // TODO: keybinds
             iconButton(multiplyIcon, "Multiply") {
-                onMouseClicked = EventHandler {
+                onAction = EventHandler {
                     bacteriaTarget ?: return@EventHandler
 
                     if (bacteriaTarget?.canMultiply == true) {
@@ -123,33 +154,35 @@ class Main {
                             bacteriaTarget)
 
                         bacteriaList += newTarget
-                        root.children += newTarget
+                        objectRoot.children += newTarget
                     }
                 }
             }
 
             iconButton(feedIcon, "Feed") {
-                onMouseClicked = EventHandler {
+                onAction = EventHandler {
                     bacteriaTarget?.searchForFood(foodList)
                 }
             }
 
             iconButton(addModificationIcon, "Add modification") {
-                onMouseClicked = EventHandler { showAddModificationModal() }
+                onAction = EventHandler { showAddModificationModal() }
             }
 
             iconButton(formMultiCellularIcon, "Form multicellular organism") {
-                bacteriaTarget?.makeMultiCellularOrganism(
-                    bacteriaTarget!!,
-                    bacteriaTarget?.searchForPartner(bacteriaList)
-                )
+                onAction = EventHandler {
+                    bacteriaTarget?.makeMultiCellularOrganism(
+                        bacteriaTarget!!,
+                        bacteriaTarget?.searchForPartner(bacteriaList)
+                    )
+                }
             }
 
             iconButton(focusIcon, "Lock camera") {
-                onMouseClicked = EventHandler { targetFocusMode = !targetFocusMode }
+                onAction = EventHandler { targetFocusMode = !targetFocusMode }
             }
 
-            iconButton(deselectIcon, "Deselect") { bacteriaTarget = null }
+            iconButton(deselectIcon, "Deselect") { onAction = EventHandler {  bacteriaTarget = null } }
         }
 
         val multiCellularTools = vBox {
@@ -172,12 +205,12 @@ class Main {
         root.left = vBox {
            children.add(targetInfo)
         }
-        root.background = Background.EMPTY
+        objectRoot.background = Background.EMPTY
 
         bacteriaList += Bacteria(
             root.scene.width / 2,
             root.scene.height / 2,
-        ).also { root.children.add(it) }
+        ).also { objectRoot.children.add(it) }
 
         loop = object: AnimationTimer() {
             override fun handle(now: Long) {
@@ -193,29 +226,37 @@ class Main {
 
                 target?.apply {
                     if (targetFocusMode) {
-                        root.translatePosition = -this.translatePosition + (scene.dimensions / 2.0)
+                        objectRoot.translatePosition = -this@apply.translatePosition + (scene.dimensions / 2.0)
                     }
-
-                    targetInfo.text = gL("choose_target")
                 }
+
+                targetInfo.text = target?.toString() ?: gL("choose_target")
 
                 if (foodSpawnInterval == 0) {
                     foodSpawnInterval = 200
                     val spawned = NanoFoodPiece()
                     foodList.add(spawned)
-                    root.children += spawned
+                    objectRoot.children += spawned
                     spawned.toBack()
                 }
                 foodSpawnInterval--
 
-                messageTimer--
+                if(messageTimer > 0) {
+                    messageTimer--
+                }
                 if (messageTimer == 0) {
                     message.text = ""
                 }
 
+                foodList.forEach {
+                    if (it.eaten) {
+                        objectRoot.children.remove(it)
+                    }
+                }
+
                 foodList.removeIf { it.eaten }
 
-                root.translatePosition += (cameraDirection * cameraSpeed)
+                objectRoot.translatePosition += (cameraDirection * cameraSpeed)
             }
         }
 

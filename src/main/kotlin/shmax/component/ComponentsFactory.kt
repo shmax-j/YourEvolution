@@ -76,3 +76,9 @@ fun Pane.imageView(image: Image, block: ImageView.() -> Unit = {}) {
     imageView.block()
     children.add(imageView)
 }
+
+fun Pane.iconButton(image: Image,
+               tooltipText: String? = null,
+               block: Button.() -> Unit = {}) {
+    children.add(shmax.component.iconButton(image, tooltipText, block))
+}

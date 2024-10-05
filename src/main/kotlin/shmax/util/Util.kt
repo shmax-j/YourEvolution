@@ -52,7 +52,7 @@ operator fun Point2D.plus(other: Point2D): Point2D = add(other)
 operator fun Point2D.plus(other: Double): Point2D = Point2D(this.x + other, this.y + other)
 
 operator fun Point2D.times(factor: Double): Point2D = multiply(factor)
-operator fun Point2D.div(factor: Double): Point2D = multiply(factor)
+operator fun Point2D.div(factor: Double): Point2D = multiply(1 / factor)
 
 operator fun Point2D.unaryMinus(): Point2D = Point2D(-this.x, -this.y)
 
@@ -67,6 +67,8 @@ var Pane.translatePosition: Point2D
         translateX = value.x
         translateY = value.y
     }
+
+
 
 
 fun Pane.rotateToPoint(point: Point2D) {

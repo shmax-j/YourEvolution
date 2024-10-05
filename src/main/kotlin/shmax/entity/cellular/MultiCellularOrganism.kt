@@ -22,13 +22,13 @@ class MultiCellularOrganism: Pane() {
     private var state = OrganismState.IDLE
     private var intention = OrganismIntention.WALK
 
-    private var gCenter = Point2D(0.0, 0.0)
+    private var glovalCenter = Point2D(0.0, 0.0)
 
     private var movingTarget: Point2D? = null
 
     private var foodTarget: NanoFoodPiece? = null
 
-    private var origin: Point2D = Point2D(0.0, 0.0)
+    private var position: Point2D = Point2D(0.0, 0.0)
 
     private var satiety = 0
 
@@ -38,7 +38,7 @@ class MultiCellularOrganism: Pane() {
 
     private var velocity = Point2D(0.0, 0.0)
 
-    private var lCenter = Point2D(0.0, 0.0)
+    private var localCenter = Point2D(0.0, 0.0)
 
     private val body = mutableListOf<Cellular>(
         Cell(0, 0),
@@ -52,7 +52,7 @@ class MultiCellularOrganism: Pane() {
 
     private fun moveToPoint(point: Point2D) {
         movingTarget = point
-        val direction = (point - Point2D(gCenter.x, gCenter.y)).normalize()
+        val direction = (point - Point2D(glovalCenter.x, glovalCenter.y)).normalize()
 
         currentSpeed = when (intention) {
             OrganismIntention.FEED -> maxSpeed
@@ -65,8 +65,8 @@ class MultiCellularOrganism: Pane() {
     }
 
     fun update() {
-        origin = Point2D(translateX, translateY)
-        gCenter = origin + lCenter
+        position = Point2D(translateX, translateY)
+        glovalCenter = position + localCenter
 
         when (state) {
             OrganismState.IDLE -> {
@@ -75,9 +75,9 @@ class MultiCellularOrganism: Pane() {
                 moveToPoint(Point2D(randomX, randomY))
             }
             OrganismState.MOVING -> {
-                translatePosition = origin + velocity
+                translatePosition = position + velocity
 
-                if ((origin + lCenter).distance(movingTarget) < 3) {
+                if ((position + localCenter).distance(movingTarget) < 3) {
                     when (intention) {
                         OrganismIntention.FEED -> {
                             satiety += 10
@@ -143,21 +143,21 @@ class MultiCellularOrganism: Pane() {
         val minX = body.minOf { it.x }
         val minY = body.minOf { it.y }
 
-        lCenter = Point2D(minX * Cell.WIDTH, minY * Cell.HEIGHT)
+        localCenter = Point2D(minX * Cell.WIDTH, minY * Cell.HEIGHT)
 
         val hCellCount = abs(maxX) + abs(maxX) + 1
         val wCellCount = abs(maxY) + abs(maxY) + 1
 
-        lCenter = Point2D(
-            lCenter.x + (hCellCount * (Cell.WIDTH / 2)),
-            lCenter.y + (wCellCount * (Cell.HEIGHT / 2)),
+        localCenter = Point2D(
+            localCenter.x + (hCellCount * (Cell.WIDTH / 2)),
+            localCenter.y + (wCellCount * (Cell.HEIGHT / 2)),
         )
     }
 
     fun searchForFood() {
         var searchDistance = 1000.0
         Main.foodList.forEach { food ->
-            val distance = food.position.distance(origin)
+            val distance = food.position.distance(position)
             if (distance < searchDistance) {
                 foodTarget = food
                 searchDistance = distance

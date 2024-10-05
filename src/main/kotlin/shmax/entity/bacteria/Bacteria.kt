@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
 import javafx.scene.transform.Rotate
 import shmax.controllers.Main
-import shmax.controllers.Main.gL
+import shmax.controllers.Main.Companion.gL
 import shmax.entity.OrganismState
 import shmax.entity.cellular.MultiCellularOrganism
 import shmax.food.NanoFoodPiece
@@ -18,7 +18,7 @@ import kotlin.random.Random
 class Bacteria(
     x: Double,
     y: Double,
-    parent: Bacteria?
+    parent: Bacteria? = null
 ): Pane() {
     companion object {
         val activeCircle = res<ImageView>("sprites/Active.png").apply {
@@ -79,21 +79,21 @@ class Bacteria(
         inherit(parent)
 
         graphics.onMouseClicked = EventHandler {
-            if (Main.BTarget != this) {
-                Main.BTarget = this
-                Main.bMap.forEach { bacteria ->
+            if (Main.bacteriaTarget != this) {
+                Main.bacteriaTarget = this
+                Main.bacteriaList.forEach { bacteria ->
                     bacteria.children.remove(activeCircle)
                 }
                 children.add(activeCircle)
             } else {
-                Main.BTarget = null
+                Main.bacteriaTarget = null
                 children.remove(activeCircle)
             }
         }
     }
 
     fun update(foodPeaces: Set<NanoFoodPiece>) {
-        if (Main.BTarget != this) {
+        if (Main.bacteriaTarget != this) {
             children.remove(activeCircle)
         }
 
@@ -206,15 +206,15 @@ class Bacteria(
             Main.printMessage("Bacteria is full")
         }
 
-        val closestFood = foodList.minBy { translatePosition.distance(it.translatePosition) }
+        val closestFood = foodList.minByOrNull { translatePosition.distance(it.translatePosition) }
 
-        val tooFarAway = closestFood.position.distance(translatePosition) > 1000
+        val tooFarAway = closestFood == null || closestFood.position.distance(translatePosition) > 1000
 
         if (tooFarAway) {
             return Main.printMessage("Theres seems to be no food close enough")
         }
 
-        foodTarget = closestFood
+        foodTarget = closestFood ?: foodTarget
 
         caller = "fs"
         currentVelocity = baseVelocity
@@ -263,15 +263,16 @@ class Bacteria(
 
     private fun bornMultiCellularOrganism() {
         partnerTarget ?: return
+        Main.bacteriaTarget ?: return
         val organism = MultiCellularOrganism()
-        organism.translatePosition = Main.BTarget.translatePosition
-        Main.mcpMap.add(organism)
+        organism.translatePosition = Main.bacteriaTarget!!.translatePosition
+        Main.multiCellularList.add(organism)
         Main.root.children.add(organism)
-        if (Main.BTarget == this || Main.BTarget == partnerTarget) {
+        if (Main.bacteriaTarget == this || Main.bacteriaTarget == partnerTarget) {
             destroy()
             partnerTarget!!.destroy()
-            Main.BTarget = null
-            Main.mcpMap += organism
+            Main.bacteriaTarget = null
+            Main.multiCellularList += organism
         } else {
             destroy()
             partnerTarget!!.destroy()
@@ -285,8 +286,8 @@ class Bacteria(
     }
 
     override fun toString() = buildString {
-        append(gL("target", "Target")).append(":\n")
-        append(gL("satiety", "Satiety")).append(" - ")
+        append(gL("target")).append(":\n")
+        append(gL("satiety")).append(" - ")
         append(round(satiety).toInt())
     }
 

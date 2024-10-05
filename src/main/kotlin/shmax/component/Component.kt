@@ -8,7 +8,9 @@ import javafx.scene.image.ImageView
 const val ICON_IMAGE_SIZE = 40.0
 
 @JvmOverloads
-fun iconButton(image: Image, tooltipText: String? = null) = button {
+fun iconButton(image: Image,
+               tooltipText: String? = null,
+               block: ImageView.() -> Unit = {}) = button {
     val imageView = ImageView(image)
     graphic = imageView
 

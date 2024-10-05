@@ -12,6 +12,7 @@ import shmax.entity.bacteria.BacteriaModificationDef
 fun showAddModificationModal() = stage(
     title = "Add modification"
 ) { root ->
+    Main.bacteriaTarget ?: return@stage
     root.center = vBox(
         spacing = 5.0,
         alignment = Pos.CENTER,
@@ -27,15 +28,15 @@ fun showAddModificationModal() = stage(
         }
 
         BacteriaModificationDef.entries.forEach { modification ->
-            val alreadyInstalled = Main.BTarget.modifications.any { it.def == modification }
-            val notEnoughSatiety = Main.BTarget.satiety < modification.price
+            val alreadyInstalled = Main.bacteriaTarget!!.modifications.any { it.def == modification }
+            val notEnoughSatiety = Main.bacteriaTarget!!.satiety < modification.price
 
             button(
                 text = modification.name,
                 disabled = alreadyInstalled or notEnoughSatiety){
                 onAction = EventHandler {
 
-                    Main.BTarget.addModification(BacteriaModification(modification))
+                    Main.bacteriaTarget!!.addModification(BacteriaModification(modification))
 
                     Main.resume()
                     close()

@@ -4,7 +4,7 @@ import javafx.event.EventHandler
 import javafx.geometry.Point2D
 import javafx.scene.layout.Pane
 import shmax.controllers.Main
-import shmax.controllers.Main.gL
+import shmax.controllers.Main.Companion.gL
 import shmax.entity.OrganismIntention
 import shmax.entity.OrganismState
 import shmax.entity.bacteria.Bacteria
@@ -124,11 +124,11 @@ class MultiCellularOrganism: Pane() {
                     cellular.graphic.fitHeight = Cell.HEIGHT
 
                     cellular.onMouseClicked = EventHandler {
-                        if (Main.BTarget != null) {
-                            Main.BTarget.children.remove(Bacteria.activeCircle)
-                            Main.BTarget = null
+                        if (Main.bacteriaTarget != null) {
+                            Main.bacteriaTarget!!.children.remove(Bacteria.activeCircle)
+                            Main.bacteriaTarget = null
                         }
-                        Main.MCPTarget = this
+                        Main.multicellularTarget = this
                     }
 
                     children.add(cellular)
@@ -171,8 +171,8 @@ class MultiCellularOrganism: Pane() {
     }
 
     override fun toString() = buildString {
-        append(gL("target", "Target"))
+        append(gL("target"))
         append(":\n")
-        append("${gL("satiety", "Satiety")}: $satiety\n")
+        append("${gL("satiety")}: $satiety\n")
     }
 }

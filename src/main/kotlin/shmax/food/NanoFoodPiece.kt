@@ -18,8 +18,8 @@ class NanoFoodPiece : Pane() {
 
         children.add(graphics)
 
-        val spawnTargetX = Main.BTarget?.translateX ?: Main.MCPTarget?.translateX ?: 0.0
-        val spawnTargetY = Main.BTarget?.translateY ?: Main.MCPTarget?.translateY ?: 0.0
+        val spawnTargetX = Main.bacteriaTarget?.translateX ?: Main.multicellularTarget?.translateX ?: 0.0
+        val spawnTargetY = Main.bacteriaTarget?.translateY ?: Main.multicellularTarget?.translateY ?: 0.0
 
         translateX = spawnTargetX + (Math.random() * 1200 - 600)
         translateY = spawnTargetY + (Math.random() * 1200 - 600)

@@ -10,16 +10,21 @@ import javafx.scene.image.ImageView
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
+import javafx.scene.paint.Color
+import javafx.scene.paint.Paint
 import javafx.stage.Modality
 import javafx.stage.Stage
 
 fun stage(
     title: String = "Stage",
     modality: Modality = Modality.NONE,
+    sceneWidth: Double = -1.0,
+    sceneHeight: Double = -1.0,
+    sceneFill: Paint = Color.WHITE,
     block: Stage.(root: BorderPane) -> Unit = {}) = with(Stage()) {
 
     val root = BorderPane()
-    val scene = Scene(root)
+    val scene = Scene(root, sceneWidth, sceneHeight)
     this.title = title
     initModality(modality)
     this.scene = scene

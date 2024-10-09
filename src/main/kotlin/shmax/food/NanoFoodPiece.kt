@@ -4,7 +4,7 @@ import javafx.geometry.Point2D
 import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
-import shmax.controllers.Main
+import shmax.controllers.MainLoop
 
 class NanoFoodPiece : Pane() {
     var eaten: Boolean = false
@@ -18,8 +18,8 @@ class NanoFoodPiece : Pane() {
 
         children.add(graphics)
 
-        val spawnTargetX = Main.bacteriaTarget?.translateX ?: Main.multicellularTarget?.translateX ?: 0.0
-        val spawnTargetY = Main.bacteriaTarget?.translateY ?: Main.multicellularTarget?.translateY ?: 0.0
+        val spawnTargetX = MainLoop.bacteriaTarget?.translateX ?: MainLoop.multicellularTarget?.translateX ?: 0.0
+        val spawnTargetY = MainLoop.bacteriaTarget?.translateY ?: MainLoop.multicellularTarget?.translateY ?: 0.0
 
         translateX = spawnTargetX + (Math.random() * 1200 - 600)
         translateY = spawnTargetY + (Math.random() * 1200 - 600)

@@ -19,7 +19,7 @@ import shmax.entity.cellular.MultiCellularOrganism
 import shmax.food.NanoFoodPiece
 import shmax.util.*
 
-class Main {
+class MainLoop {
     companion object {
         val objectRoot = Pane()
         var lazyRoot: BorderPane? = null

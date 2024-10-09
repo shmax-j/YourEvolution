@@ -5,8 +5,8 @@ import javafx.geometry.Point2D
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
 import javafx.scene.transform.Rotate
-import shmax.controllers.Main
-import shmax.controllers.Main.Companion.gL
+import shmax.controllers.MainLoop
+import shmax.controllers.MainLoop.Companion.gL
 import shmax.entity.OrganismState
 import shmax.entity.cellular.MultiCellularOrganism
 import shmax.food.NanoFoodPiece
@@ -79,21 +79,21 @@ class Bacteria(
         inherit(parent)
 
         graphics.onMouseClicked = EventHandler {
-            if (Main.bacteriaTarget != this) {
-                Main.bacteriaTarget = this
-                Main.bacteriaList.forEach { bacteria ->
+            if (MainLoop.bacteriaTarget != this) {
+                MainLoop.bacteriaTarget = this
+                MainLoop.bacteriaList.forEach { bacteria ->
                     bacteria.children.remove(activeCircle)
                 }
                 children.add(activeCircle)
             } else {
-                Main.bacteriaTarget = null
+                MainLoop.bacteriaTarget = null
                 children.remove(activeCircle)
             }
         }
     }
 
     fun update(foodPeaces: Set<NanoFoodPiece>) {
-        if (Main.bacteriaTarget != this) {
+        if (MainLoop.bacteriaTarget != this) {
             children.remove(activeCircle)
         }
 
@@ -110,8 +110,8 @@ class Bacteria(
                 moveToPoint(translatePosition + Random.nextDouble(700.0, 1400.0))
             }
             OrganismState.MOVING -> {
-                if (caller == "fs" && foodTarget !in Main.objectRoot.children) {
-                    searchForFood(Main.foodList)
+                if (caller == "fs" && foodTarget !in MainLoop.objectRoot.children) {
+                    searchForFood(MainLoop.foodList)
                 }
                 if (frontVector.distance(movingTarget) < frontVector.distance(frontVector + (direction * currentVelocity))) {
                     when (caller) {
@@ -203,7 +203,7 @@ class Bacteria(
 
     fun searchForFood(foodList: Set<NanoFoodPiece>) {
         if (satiety >= maxSatiety - 1) {
-            Main.printMessage("Bacteria is full")
+            MainLoop.printMessage("Bacteria is full")
         }
 
         val closestFood = foodList.minByOrNull { translatePosition.distance(it.translatePosition) }
@@ -211,7 +211,7 @@ class Bacteria(
         val tooFarAway = closestFood == null || closestFood.position.distance(translatePosition) > 1000
 
         if (tooFarAway) {
-            return Main.printMessage("Theres seems to be no food close enough")
+            return MainLoop.printMessage("Theres seems to be no food close enough")
         }
 
         foodTarget = closestFood ?: foodTarget
@@ -246,7 +246,7 @@ class Bacteria(
     }
 
     fun makeMultiCellularOrganism(first: Bacteria, second: Bacteria?) {
-        second ?: return Main.printMessage("No other bacterias close enough")
+        second ?: return MainLoop.printMessage("No other bacterias close enough")
 
         partnerTarget = second
         partnerTarget?.partnerTarget = first
@@ -263,16 +263,16 @@ class Bacteria(
 
     private fun bornMultiCellularOrganism() {
         partnerTarget ?: return
-        Main.bacteriaTarget ?: return
+        MainLoop.bacteriaTarget ?: return
         val organism = MultiCellularOrganism()
-        organism.translatePosition = Main.bacteriaTarget!!.translatePosition
-        Main.multiCellularList.add(organism)
-        Main.objectRoot.children.add(organism)
-        if (Main.bacteriaTarget == this || Main.bacteriaTarget == partnerTarget) {
+        organism.translatePosition = MainLoop.bacteriaTarget!!.translatePosition
+        MainLoop.multiCellularList.add(organism)
+        MainLoop.objectRoot.children.add(organism)
+        if (MainLoop.bacteriaTarget == this || MainLoop.bacteriaTarget == partnerTarget) {
             destroy()
             partnerTarget!!.destroy()
-            Main.bacteriaTarget = null
-            Main.multiCellularList += organism
+            MainLoop.bacteriaTarget = null
+            MainLoop.multiCellularList += organism
         } else {
             destroy()
             partnerTarget!!.destroy()
@@ -281,7 +281,7 @@ class Bacteria(
     }
 
     private fun destroy() {
-        Main.objectRoot.children.remove(this)
+        MainLoop.objectRoot.children.remove(this)
         remove = true
     }
 

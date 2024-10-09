@@ -21,14 +21,18 @@ fun stage(
     sceneWidth: Double = -1.0,
     sceneHeight: Double = -1.0,
     sceneFill: Paint = Color.WHITE,
-    block: Stage.(root: BorderPane) -> Unit = {}) = with(Stage()) {
+    block: Stage.(root: BorderPane) -> Unit = {}): Stage {
 
-    val root = BorderPane()
-    val scene = Scene(root, sceneWidth, sceneHeight)
-    this.title = title
-    initModality(modality)
-    this.scene = scene
-    block(root)
+    val stage = Stage()
+    with(stage) {
+        val root = BorderPane()
+        val scene = Scene(root, sceneWidth, sceneHeight)
+        this.title = title
+        initModality(modality)
+        this.scene = scene
+        block(root)
+    }
+    return stage
 }
 
 fun Pane.vBox(

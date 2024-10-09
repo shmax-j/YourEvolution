@@ -12,7 +12,7 @@ import shmax.entity.bacteria.BacteriaModificationDef
 fun showAddModificationModal() = stage(
     title = "Add modification"
 ) { root ->
-    Main.bacteriaTarget ?: return@stage
+    MainLoop.bacteriaTarget ?: return@stage
     root.center = vBox(
         spacing = 5.0,
         alignment = Pos.CENTER,
@@ -21,24 +21,24 @@ fun showAddModificationModal() = stage(
         onKeyPressed = EventHandler { keyEvent ->
             when (keyEvent.code.name) {
                 "Esc", "Tab" -> {
-                    Main.resume()
+                    MainLoop.resume()
                     close()
                 }
             }
         }
 
         BacteriaModificationDef.entries.forEach { modification ->
-            val alreadyInstalled = Main.bacteriaTarget!!.modifications.any { it.def == modification }
-            val notEnoughSatiety = Main.bacteriaTarget!!.satiety < modification.price
+            val alreadyInstalled = MainLoop.bacteriaTarget!!.modifications.any { it.def == modification }
+            val notEnoughSatiety = MainLoop.bacteriaTarget!!.satiety < modification.price
 
             button(
                 text = modification.name,
                 disabled = alreadyInstalled or notEnoughSatiety){
                 onAction = EventHandler {
 
-                    Main.bacteriaTarget!!.addModification(BacteriaModification(modification))
+                    MainLoop.bacteriaTarget!!.addModification(BacteriaModification(modification))
 
-                    Main.resume()
+                    MainLoop.resume()
                     close()
                 }
             }
@@ -46,10 +46,10 @@ fun showAddModificationModal() = stage(
     }
 
     onCloseRequest = EventHandler {
-        Main.resume()
+        MainLoop.resume()
         close()
     }
 
-    Main.pause()
+    MainLoop.pause()
     showAndWait()
 }

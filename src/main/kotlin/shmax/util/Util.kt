@@ -6,7 +6,7 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.layout.Pane
 import javafx.scene.transform.Rotate
-import shmax.controllers.Main
+import shmax.controllers.MainLoop
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -14,7 +14,7 @@ import java.util.*
 import kotlin.random.Random
 
 fun resource(path: String?) =
-    Main::class.java.classLoader.getResource(path)?.toURI() ?: throw FileNotFoundException(path)
+    MainLoop::class.java.classLoader.getResource(path)?.toURI() ?: throw FileNotFoundException("File not found on specified path: $path")
 
 
 fun fileResource(path: String?) = File(resource(path))

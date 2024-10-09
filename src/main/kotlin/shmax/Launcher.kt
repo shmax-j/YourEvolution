@@ -1,11 +1,14 @@
 package shmax
 
 import javafx.application.Platform
-import shmax.controllers.Main
+import shmax.controllers.MainLoop
+import shmax.error.globalExceptionHandler
 
 
 fun main(args: Array<String>) {
     Platform.startup {
-        Main().start()
+        globalExceptionHandler {
+            MainLoop().start()
+        }
     }
 }

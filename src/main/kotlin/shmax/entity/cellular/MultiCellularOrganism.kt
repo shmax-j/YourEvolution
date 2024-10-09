@@ -3,8 +3,8 @@ package shmax.entity.cellular
 import javafx.event.EventHandler
 import javafx.geometry.Point2D
 import javafx.scene.layout.Pane
-import shmax.controllers.Main
-import shmax.controllers.Main.Companion.gL
+import shmax.controllers.MainLoop
+import shmax.controllers.MainLoop.Companion.gL
 import shmax.entity.OrganismIntention
 import shmax.entity.OrganismState
 import shmax.entity.bacteria.Bacteria
@@ -124,11 +124,11 @@ class MultiCellularOrganism: Pane() {
                     cellular.graphic.fitHeight = Cell.HEIGHT
 
                     cellular.onMouseClicked = EventHandler {
-                        if (Main.bacteriaTarget != null) {
-                            Main.bacteriaTarget!!.children.remove(Bacteria.activeCircle)
-                            Main.bacteriaTarget = null
+                        if (MainLoop.bacteriaTarget != null) {
+                            MainLoop.bacteriaTarget!!.children.remove(Bacteria.activeCircle)
+                            MainLoop.bacteriaTarget = null
                         }
-                        Main.multicellularTarget = this
+                        MainLoop.multicellularTarget = this
                     }
 
                     children.add(cellular)
@@ -156,7 +156,7 @@ class MultiCellularOrganism: Pane() {
 
     fun searchForFood() {
         var searchDistance = 1000.0
-        Main.foodList.forEach { food ->
+        MainLoop.foodList.forEach { food ->
             val distance = food.position.distance(position)
             if (distance < searchDistance) {
                 foodTarget = food
@@ -164,7 +164,7 @@ class MultiCellularOrganism: Pane() {
             }
         }
 
-        foodTarget ?: return Main.printMessage("Can't seem to find food around")
+        foodTarget ?: return MainLoop.printMessage("Can't seem to find food around")
 
         moveToPoint(foodTarget!!.position)
         intention = OrganismIntention.FEED

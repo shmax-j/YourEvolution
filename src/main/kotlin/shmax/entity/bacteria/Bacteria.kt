@@ -10,6 +10,7 @@ import shmax.controllers.MainLoop.Companion.gL
 import shmax.entity.OrganismState
 import shmax.entity.cellular.MultiCellularOrganism
 import shmax.food.NanoFoodPiece
+import shmax.generated.R
 import shmax.util.*
 import kotlin.math.min
 import kotlin.math.round
@@ -21,7 +22,7 @@ class Bacteria(
     parent: Bacteria? = null
 ): Pane() {
     companion object {
-        val activeCircle = res<ImageView>("sprites/Active.png").apply {
+        val activeCircle = ImageView(R.images.sprite_active).apply {
             fitHeight = 75.0
             fitWidth = 75.0
         }
@@ -44,7 +45,7 @@ class Bacteria(
     private var state = OrganismState.IDLE
     var remove = false
     private var movingTarget = Point2D(0.0, 0.0)
-    private val graphics = res<ImageView>("sprites/bacteria/Bacteria1.png")
+    private val graphics = ImageView(R.images.sprite_bacteria_bacteria1)
 
     private var caller = "idle"
 

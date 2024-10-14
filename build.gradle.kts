@@ -14,7 +14,9 @@ repositories {
     mavenCentral()
 }
 
-dependencies {}
+dependencies {
+    implementation("com.squareup:kotlinpoet:1.18.1")
+}
 
 javafx {
     version = "22.0.1"

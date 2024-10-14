@@ -1,8 +1,7 @@
 package shmax.entity.cellular
 
-import javafx.scene.image.Image
 import javafx.scene.image.ImageView
-import shmax.util.res
+import shmax.generated.R
 
 class Cell(
     x: Int,
@@ -22,24 +21,24 @@ class Cell(
         const val WIDTH: Double = 46.0
         const val HEIGHT: Double = 68.0
 
-        val center = res<Image>("sprites/bacteria/Bacteria_Center.png")
+        val center = R.images.sprite_bacteria_bacteria_center
         val cellsImageMap = mapOf(
             "0000" to center,
             "2222" to center,
-            "0222" to res<Image>("sprites/bacteria/Bacteria_Top.png"),
-            "2202" to res<Image>("sprites/bacteria/Bacteria_Bottom.png"),
-            "2022" to res<Image>("sprites/bacteria/Bacteria_Right.png"),
-            "2220" to res<Image>("sprites/bacteria/Bacteria_Left.png"),
-            "0022" to res<Image>("sprites/bacteria/Bacteria_TopRight.png"),
-            "0220" to res<Image>("sprites/bacteria/Bacteria_TopLeft.png"),
-            "2002" to res<Image>("sprites/bacteria/Bacteria_BottomRight.png"),
-            "2200" to res<Image>("sprites/bacteria/Bacteria_BottomLeft.png"),
-            "0020" to res<Image>("sprites/bacteria/Bacteria_TopTop.png"),
-            "2000" to res<Image>("sprites/bacteria/Bacteria_BottomBottom.png"),
-            "0002" to res<Image>("sprites/bacteria/Bacteria_RightRight.png"),
-            "0200" to res<Image>("sprites/bacteria/Bacteria_LeftLeft.png"),
-            "0202" to res<Image>("sprites/bacteria/Bacteria_TopBottom.png"),
-            "2020" to res<Image>("sprites/bacteria/Bacteria_RightLeft.png"),
+            "0222" to R.images.sprite_bacteria_bacteria_top,
+            "2202" to R.images.sprite_bacteria_bacteria_bottom,
+            "2022" to R.images.sprite_bacteria_bacteria_right,
+            "2220" to R.images.sprite_bacteria_bacteria_left,
+            "0022" to R.images.sprite_bacteria_bacteria_topright,
+            "0220" to R.images.sprite_bacteria_bacteria_topleft,
+            "2002" to R.images.sprite_bacteria_bacteria_bottomright,
+            "2200" to R.images.sprite_bacteria_bacteria_bottomleft,
+            "0020" to R.images.sprite_bacteria_bacteria_toptop,
+            "2000" to R.images.sprite_bacteria_bacteria_bottombottom,
+            "0002" to R.images.sprite_bacteria_bacteria_rightright,
+            "0200" to R.images.sprite_bacteria_bacteria_leftleft,
+            "0202" to R.images.sprite_bacteria_bacteria_topbottom,
+            "2020" to R.images.sprite_bacteria_bacteria_rightleft,
         )
     }
 }

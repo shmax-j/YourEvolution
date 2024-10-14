@@ -5,7 +5,6 @@ import javafx.event.EventHandler
 import javafx.geometry.Point2D
 import javafx.geometry.Pos
 import javafx.scene.control.Label
-import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.Background
 import javafx.scene.layout.BorderPane
@@ -17,6 +16,7 @@ import shmax.component.vBox
 import shmax.entity.bacteria.Bacteria
 import shmax.entity.cellular.MultiCellularOrganism
 import shmax.food.NanoFoodPiece
+import shmax.generated.R
 import shmax.util.*
 
 class MainLoop {
@@ -24,10 +24,9 @@ class MainLoop {
         val objectRoot = Pane()
         var lazyRoot: BorderPane? = null
         var loop: AnimationTimer? = null
-        var onPause = false
-        val startProperties = loadProperties("start.properties")
-        val languagesList = loadProperties("languages/language.properties")
-        val localizationMap = loadProperties(languagesList[startProperties["language"]].toString())
+        private val startProperties = loadProperties("assets/start.properties")
+        private val languagesList = loadProperties("assets/languages/language.properties")
+        private val localizationMap = loadProperties(languagesList[startProperties["language"]].toString())
         var foodSpawnInterval = 50
         var targetFocusMode = false
         val foodList = mutableSetOf<NanoFoodPiece>()
@@ -38,14 +37,6 @@ class MainLoop {
         var multicellularTarget: MultiCellularOrganism? = null
         var cameraSpeed = 2.0
         var paused = false
-
-        // Icons
-        val multiplyIcon = res<Image>("icons/bacteria/multiply.png")
-        val focusIcon = res<Image>("icons/cameraFocus.png")
-        val feedIcon = res<Image>("icons/eat.png")
-        val addModificationIcon = res<Image>("icons/bacteria/addModification.png")
-        val formMultiCellularIcon = res<Image>("icons/bacteria/makeMCP.png")
-        val deselectIcon = res<Image>("icons/main/deselect.png")
 
         var message = Label("")
         var messageTimer = 0
@@ -141,7 +132,7 @@ class MainLoop {
             maxHeight = 150.0
 
             // TODO: keybinds
-            iconButton(multiplyIcon, "Multiply") {
+            iconButton(R.images.icon_bacteria_multiply, "Multiply") {
                 onAction = EventHandler {
                     bacteriaTarget ?: return@EventHandler
 
@@ -159,17 +150,17 @@ class MainLoop {
                 }
             }
 
-            iconButton(feedIcon, "Feed") {
+            iconButton(R.images.icon_feed, "Feed") {
                 onAction = EventHandler {
                     bacteriaTarget?.searchForFood(foodList)
                 }
             }
 
-            iconButton(addModificationIcon, "Add modification") {
+            iconButton(R.images.icon_bacteria_modification, "Add modification") {
                 onAction = EventHandler { showAddModificationModal() }
             }
 
-            iconButton(formMultiCellularIcon, "Form multicellular organism") {
+            iconButton(R.images.icon_bacteria_mate, "Form multicellular organism") {
                 onAction = EventHandler {
                     bacteriaTarget?.makeMultiCellularOrganism(
                         bacteriaTarget!!,
@@ -178,26 +169,26 @@ class MainLoop {
                 }
             }
 
-            iconButton(focusIcon, "Lock camera") {
+            iconButton(R.images.icon_focus, "Lock camera") {
                 onAction = EventHandler { targetFocusMode = !targetFocusMode }
             }
 
-            iconButton(deselectIcon, "Deselect") { onAction = EventHandler {  bacteriaTarget = null } }
+            iconButton(R.images.icon_deselect, "Deselect") { onAction = EventHandler {  bacteriaTarget = null } }
         }
 
         val multiCellularTools = vBox {
             alignment = Pos.TOP_RIGHT
             maxHeight = 50.0
 
-            iconButton(focusIcon, "Lock camera") {
+            iconButton(R.images.icon_focus, "Lock camera") {
                 onMouseClicked = EventHandler { targetFocusMode = !targetFocusMode }
             }
 
-            iconButton(feedIcon, "Feed") {
+            iconButton(R.images.icon_feed, "Feed") {
                 onMouseClicked = EventHandler { multicellularTarget?.searchForFood()}
             }
 
-            iconButton(deselectIcon, "Deselect") { multicellularTarget = null }
+            iconButton(R.images.icon_deselect, "Deselect") { multicellularTarget = null }
         }
 
         val targetInfo = Label("Select something")
